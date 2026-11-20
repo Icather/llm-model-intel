@@ -6,7 +6,7 @@
 
 [![License](https://img.shields.io/badge/License-MIT-22c55e)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)](https://www.python.org)
-[![Models](https://img.shields.io/badge/scored_models-37-4D6BFE)](master_table_20261121.md)
+[![Models](https://img.shields.io/badge/scored_models-39-4D6BFE)](master_table_20261121.md)
 [![Vendors](https://img.shields.io/badge/vendors-14-8957E5)](baseline.json)
 [![Updated](https://img.shields.io/badge/updated-2026--11--21-blue)](master_table_20261121.md)
 
@@ -27,7 +27,7 @@ A curated dataset, a recompute pipeline, and two deliverables:
 | `generate_master.py` | Emits `master_table_YYYYMMDD.md` |
 | `gen_scatter.py` | Emits `scatter_YYYYMMDD.html` (single file, offline) |
 
-14 vendors (9 China-based, 5 overseas), 37 scored models, plus 3 models that are in the library but have no third-party score yet (listed separately, unranked).
+14 vendors (9 China-based, 5 overseas), 39 scored models, plus 3 models that are in the library but have no third-party score yet (listed separately, unranked).
 
 ## Why not just use the leaderboards
 
@@ -52,12 +52,12 @@ This library instead: standardises **within** each `(leaderboard, metric)` group
 
 The scatter's horizontal axis is **what one task actually costs** (¥ per run), not "price per million tokens". The difference is large: on the same task, a model running at max thinking can burn 30x the tokens of another.
 
-- **23 models are measured** by Artificial Analysis (`intelligenceIndexCostPerTask.cost.total`) at the **vendor default effort** — the same configuration the plotted capability score refers to;
+- **25 models are measured** by Artificial Analysis (`intelligenceIndexCostPerTask.cost.total`) at the **vendor default effort** — the same configuration the plotted capability score refers to;
 - **14 are inferred**. Four of them use a *same-vendor, same-price proxy*: a sibling sold at an identical input/output price is almost always the same architecture family (Fable 5 / 5.1, DeepSeek 4-flash / 4.1-flash, MiMo 2.5 / 2.6, Grok 4.6 / 4.7), so it inherits the measured value;
 - the remaining ten use a **calibrated token profile**: `(300k × p_in + 90k × p_out) × k`, with `k` chosen so the median inferred/measured ratio is exactly 1.0;
 - inferred points carry a **`≈` before the name** and show `≈¥` in the tooltip. History rows have no contemporaneous measurement and are all inferred from their output price.
 
-**Why the inference cannot be trusted for fine judgements**: measured cost ÷ output price spans roughly **50x** across the 23 measured models (Terra costs ¥1.2 per task while Gemini 3.8 Flash, at a similar list price, costs ¥44). Token burn is only loosely related to price, so the estimate gives an order of magnitude, not a 10% ranking.
+**Why the inference cannot be trusted for fine judgements**: measured cost ÷ output price spans roughly **50x** across the 25 measured models (Terra costs ¥1.2 per task while Gemini 3.8 Flash, at a similar list price, costs ¥44). Token burn is only loosely related to price, so the estimate gives an order of magnitude, not a 10% ranking.
 
 ## Two price columns — do not compare across them
 
@@ -85,7 +85,7 @@ Hover a point and a **diagonal ladder** unfolds from it: stronger efforts sit **
 - **the anchor is the vendor's default effort** (AA `release.defaultEffort`). The plotted point is the configuration the list price actually buys, so the ladder opens **both up and down**, not only downward;
 - **the horizontal offset is measured, not drawn**: since the x axis already is cost per task, each rung sits at its own cost (anchor cost × that tier's cost ratio from AA `intelligenceIndexCostPerTask`). More thinking means more reasoning tokens, which is why higher efforts drift right;
 - **vertical offset** is the AA index delta, scaled. It is **not** mapped onto the plot's y axis: Opus spans 24 index points from low to max while the whole axis spans ~40, so a true-scale ladder would leave the frame. The ladder is therefore a **local inset** attached to the point, and every rung is labelled with the real numbers (AA index · cost multiplier, anchor = 1.0);
-- **only models where AA publishes more than one effort get a ladder** (9 of 37 today). Kimi, Qwen4, MiniMax and MiMo expose a single effort on AA, so hovering them shows nothing. GLM-5.3's default *is* its top effort (max), so it only has the downward half; both DeepSeek models default to high, so they only have the upward half. That is vendor configuration, not missing data.
+- **only models where AA publishes more than one effort get a ladder** (11 of 39 today). Kimi, Qwen4, MiniMax and MiMo expose a single effort on AA, so hovering them shows nothing. GLM-5.3's default *is* its top effort (max), so it only has the downward half; both DeepSeek models default to high, so they only have the upward half. That is vendor configuration, not missing data.
 
 ## Quick start
 

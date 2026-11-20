@@ -129,7 +129,7 @@ con.close()
 # Luna) stay visible by default, per user instruction.
 REPRESENTATIVE = {
     "anthropic": ["claude-opus-5-5", "claude-fable-5-1"],
-    "openai": ["gpt-6-astra", "gpt-6-sol", "gpt-6.1-terra", "gpt-6-luna"],
+    "openai": ["gpt-6.2-astra", "gpt-6.2-sol", "gpt-6.1-terra", "gpt-6-luna"],
     "google": ["gemini-3-pro", "gemini-3-8-flash"],
     "xai": ["grok-4.7"],
     "meta": ["muse-spark-1-3"],
@@ -941,6 +941,8 @@ html = (html.replace("__CHARTJS__", _inline_js("chart.umd.min.js"))
             .replace("__UNRATED_HTML__", UNRATED_HTML)
             .replace("__CURELO__", CUR_ELO_JS)
             .replace("__HISTELO__", HIST_ELO_JS)
+            .replace("__NMEAS__", str(TASK_META.get("n_measured", "-")))
+            .replace("__NEST__", str(TASK_META.get("n_estimated", "-")))
             .replace("__JS__", JS))
 
 with open(OUT, "w", encoding="utf-8") as f:

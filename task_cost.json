@@ -7,7 +7,7 @@
   "tin": 300000,
   "tout": 90000,
   "scale_k": 3.1495,
-  "n_measured": 23,
+  "n_measured": 25,
   "n_estimated": 14,
   "proxy_rule": "an unmeasured model sold at exactly the same input/output price as a measured sibling inherits that sibling's measured per-task cost",
   "median_ratio_before_scale": 0.3175,
@@ -272,6 +272,20 @@
    "effort": null,
    "src": "estimated",
    "est": true
+  },
+  "gpt-6.2-astra": {
+   "cny": 11.486,
+   "usd": 1.6176877362867854,
+   "effort": "medium",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "gpt-6.2-sol": {
+   "cny": 2.883,
+   "usd": 0.40605590960076604,
+   "effort": "medium",
+   "src": "aa-model-page",
+   "est": false
   }
  }
 }

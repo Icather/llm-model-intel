@@ -514,8 +514,8 @@
    "multimodal_in": 1,
    "open_weights": 0,
    "license": "Proprietary",
-   "is_latest": 1,
-   "notes": "2026-09-03~09-05 分批全量推送，API 同步上线。定价 $10/$50 每百万输入/输出 token，为 GPT-5.6 Sol（$4/$20）的 2.5 倍，与 Claude Fable 5.1 持平；缓存读取 9 折、缓存写入 +25%。上下文约 105 万 token，最大输出 12.8 万。官方称 ARC-AGI-3 99.9%、FrontierMath Tier 4 97.6%、OSWorld 2.0 72.6%，但第三方口径明显更保守：Artificial Analysis 智能指数仅 61 分（与自家上代 Sol 持平，落后 Fable 5.1 的 66）；Coding Agent Index 67（与 Opus 5 / Fable 5 / Muse Spark 1.3 同档，Fable 5.1 以 70 领先）。ARC Prize 实测 ARC-AGI-3 为 62.7%（测试成本约 2.6 万美元/题），远低于 OpenAI 自报的 99.9%——后者用的是 OpenAI 自研 harness（保留跨请求推理链）。最大亮点是 token 效率：同样任务只用 Sol 的三分之一、Opus 5 的五分之一 token，因此编码任务单价比 Fable 5 低一半以上。幻觉率（AA-Omniscience）从 92% 降至 51%。失分项：GDPval-AA v2 掉约 80 Elo，τ³-Banking、SciCode、长上下文推理小幅回退。OpenAI 内部网络安全评级首个达「Critical」，最强网安能力仅走受邀的 Defender Program。争议：发布首日付费用户打不开、企业客户优先，Altman 已公开致歉。 2026-09-25 复核 vals.ai SWE-bench Verified：榜期仍为 9/1/2026，本库 13 行逐值未变；页面新增的 GPT-5.6 Terra(95.40)/Luna(93.00)/Opus 4.8(88.60)/Grok 4.5(86.60)/Muse Spark 1.2(86.60) 均不在跟踪集。 2026-09-27 复核 llm-stats 全量榜：可见 top-30 内 22 个在库模型四维与 9/23 板期逐值一致（Claude Opus 5.5 59.7/57.8/51.7/44.5、GPT-6 Astra 59.5/57.3/49.0/45.9），按 9/12 固化判据不做整组刷新。 2026-09-27 复核 vals.ai SWE-bench Verified：榜期仍为 9/1/2026，本库 13 行逐值未变。 2026-09-28 复核 llm-stats 全量榜：可见 top-30 内 22 个在库模型四维仍与 9/23 板期逐值一致（Claude Opus 5.5 59.7/57.8/51.7/44.5、GPT-6 Astra 59.5/57.3/49.0/45.9、Kimi K3 52.5/51.3/42.3/38.3），按 9/12 固化判据不做整组刷新。**这是 9/23 建板以来的第四次读取（9/23、9/25、9/27、9/28），四次全部逐值相同。** 2026-09-28 复核 vals.ai SWE-bench Verified：榜期仍为 9/1/2026，本库 13 行逐值未变。 2026-09-30 复核 llm-stats 全量榜：**本日发生第二次实质重标定**（9/22 Opus 5.5 入场后的第一次），触发因素为 9/28 Claude Sonnet 5.5（58.0）与 9/29 GPT-6.1 Sol（52.0）双双空降顶部。可见 top-30 内 20 个在库模型中 18 个下移 0.1~0.7（Claude Fable 5.1 Overall 54.5→53.8、Grok 4.7 48.0→47.5、GPT-6 Sol 49.4→49.0），而 **Claude Opus 5.5 逆势上行 59.7→60.3**（Reasoning 57.8→58.4）。按 9/12 固化判据「实读 ≠ 现存快照即整组刷新」执行：删 80 行 @2026-09-23 / 插 80 行 @2026-09-30。⚠️ 库外新模型 Sonnet 5.5 / GPT-6.1 Sol **只记档不入池**（境外厂商不主动扩池）。 2026-09-30 复核 vals.ai SWE-bench Verified：榜期仍为 9/1/2026，本库 13 行逐值未变。｜**10/07 复核**：OpenAI 10/1 发布 **GPT-6 Astra Ultrafast** —— 与 GPT-6 Astra **同权重**，仅换 NVIDIA Blackwell 推理优化（token 生成最高 8×），价格另见 Ultrafast 指南。**判为「同权重改 Infra」的档位发布**（同 GLM-5.3-FlashX 判例）→ 不建 model 行、不加 price 行；库内 gpt-6-astra $10/$50 未变。 2026-10-11 复核 llm-stats：重标定后 58.3/56.7/47.8/44.9（整体 −0.8），退居第 3，被新进的 Sonnet 5.5 反超（58.3 并列）。⚠️ 10/7 OpenAI 把 GPT-6（Sol/Luna 的「October」版本）推向全体 ChatGPT 用户，Astra 仍为 OpenAI 能力天花板，$10/$50 未变。 2026-10-14 复核 llm-stats：58.5/57.3/47.1/45.0（+0.2），仍列全站第 3。$10/$50 未变；官方侧无新动作。 2026-10-18 复核 llm-stats：58.3/56.7/47.8/44.9（Overall −0.2、Reasoning −0.6，Coding +0.7），全站第 3（第 2 被 Claude Sonnet 5.5 占据）；$10/$50 未变。 2026-10-21 复核 llm-stats：58.1/57.1/46.2/44.9（Reasoning +0.4、Coding −1.6、Overall −0.2），全站第 3；$10/$50 未变。 2026-11-18：OpenAI 11/17 发布 **GPT-6.2 Astra（$8/$0.4/$40，较本行 $10/$50 降 20%、缓存输入降 60%）与 GPT-6.2 Sol（$2/$0.10/$10，持平 6.1 Sol）**，llm-stats 空降 **#3 / #8**（58.04 与 53.92），AA 智能指数 62.1 / 57.3（Fable 5.2 仍以 64.6 居首）。二者属境外跟踪厂商主线 → 只记档、**不建行不入池**。本行位次降至 #7（55.43/54.17/43.15/41.92）。"
+   "is_latest": 0,
+   "notes": "2026-09-03~09-05 分批全量推送，API 同步上线。定价 $10/$50 每百万输入/输出 token，为 GPT-5.6 Sol（$4/$20）的 2.5 倍，与 Claude Fable 5.1 持平；缓存读取 9 折、缓存写入 +25%。上下文约 105 万 token，最大输出 12.8 万。官方称 ARC-AGI-3 99.9%、FrontierMath Tier 4 97.6%、OSWorld 2.0 72.6%，但第三方口径明显更保守：Artificial Analysis 智能指数仅 61 分（与自家上代 Sol 持平，落后 Fable 5.1 的 66）；Coding Agent Index 67（与 Opus 5 / Fable 5 / Muse Spark 1.3 同档，Fable 5.1 以 70 领先）。ARC Prize 实测 ARC-AGI-3 为 62.7%（测试成本约 2.6 万美元/题），远低于 OpenAI 自报的 99.9%——后者用的是 OpenAI 自研 harness（保留跨请求推理链）。最大亮点是 token 效率：同样任务只用 Sol 的三分之一、Opus 5 的五分之一 token，因此编码任务单价比 Fable 5 低一半以上。幻觉率（AA-Omniscience）从 92% 降至 51%。失分项：GDPval-AA v2 掉约 80 Elo，τ³-Banking、SciCode、长上下文推理小幅回退。OpenAI 内部网络安全评级首个达「Critical」，最强网安能力仅走受邀的 Defender Program。争议：发布首日付费用户打不开、企业客户优先，Altman 已公开致歉。 2026-09-25 复核 vals.ai SWE-bench Verified：榜期仍为 9/1/2026，本库 13 行逐值未变；页面新增的 GPT-5.6 Terra(95.40)/Luna(93.00)/Opus 4.8(88.60)/Grok 4.5(86.60)/Muse Spark 1.2(86.60) 均不在跟踪集。 2026-09-27 复核 llm-stats 全量榜：可见 top-30 内 22 个在库模型四维与 9/23 板期逐值一致（Claude Opus 5.5 59.7/57.8/51.7/44.5、GPT-6 Astra 59.5/57.3/49.0/45.9），按 9/12 固化判据不做整组刷新。 2026-09-27 复核 vals.ai SWE-bench Verified：榜期仍为 9/1/2026，本库 13 行逐值未变。 2026-09-28 复核 llm-stats 全量榜：可见 top-30 内 22 个在库模型四维仍与 9/23 板期逐值一致（Claude Opus 5.5 59.7/57.8/51.7/44.5、GPT-6 Astra 59.5/57.3/49.0/45.9、Kimi K3 52.5/51.3/42.3/38.3），按 9/12 固化判据不做整组刷新。**这是 9/23 建板以来的第四次读取（9/23、9/25、9/27、9/28），四次全部逐值相同。** 2026-09-28 复核 vals.ai SWE-bench Verified：榜期仍为 9/1/2026，本库 13 行逐值未变。 2026-09-30 复核 llm-stats 全量榜：**本日发生第二次实质重标定**（9/22 Opus 5.5 入场后的第一次），触发因素为 9/28 Claude Sonnet 5.5（58.0）与 9/29 GPT-6.1 Sol（52.0）双双空降顶部。可见 top-30 内 20 个在库模型中 18 个下移 0.1~0.7（Claude Fable 5.1 Overall 54.5→53.8、Grok 4.7 48.0→47.5、GPT-6 Sol 49.4→49.0），而 **Claude Opus 5.5 逆势上行 59.7→60.3**（Reasoning 57.8→58.4）。按 9/12 固化判据「实读 ≠ 现存快照即整组刷新」执行：删 80 行 @2026-09-23 / 插 80 行 @2026-09-30。⚠️ 库外新模型 Sonnet 5.5 / GPT-6.1 Sol **只记档不入池**（境外厂商不主动扩池）。 2026-09-30 复核 vals.ai SWE-bench Verified：榜期仍为 9/1/2026，本库 13 行逐值未变。｜**10/07 复核**：OpenAI 10/1 发布 **GPT-6 Astra Ultrafast** —— 与 GPT-6 Astra **同权重**，仅换 NVIDIA Blackwell 推理优化（token 生成最高 8×），价格另见 Ultrafast 指南。**判为「同权重改 Infra」的档位发布**（同 GLM-5.3-FlashX 判例）→ 不建 model 行、不加 price 行；库内 gpt-6-astra $10/$50 未变。 2026-10-11 复核 llm-stats：重标定后 58.3/56.7/47.8/44.9（整体 −0.8），退居第 3，被新进的 Sonnet 5.5 反超（58.3 并列）。⚠️ 10/7 OpenAI 把 GPT-6（Sol/Luna 的「October」版本）推向全体 ChatGPT 用户，Astra 仍为 OpenAI 能力天花板，$10/$50 未变。 2026-10-14 复核 llm-stats：58.5/57.3/47.1/45.0（+0.2），仍列全站第 3。$10/$50 未变；官方侧无新动作。 2026-10-18 复核 llm-stats：58.3/56.7/47.8/44.9（Overall −0.2、Reasoning −0.6，Coding +0.7），全站第 3（第 2 被 Claude Sonnet 5.5 占据）；$10/$50 未变。 2026-10-21 复核 llm-stats：58.1/57.1/46.2/44.9（Reasoning +0.4、Coding −1.6、Overall −0.2），全站第 3；$10/$50 未变。 2026-11-18：OpenAI 11/17 发布 **GPT-6.2 Astra（$8/$0.4/$40，较本行 $10/$50 降 20%、缓存输入降 60%）与 GPT-6.2 Sol（$2/$0.10/$10，持平 6.1 Sol）**，llm-stats 空降 **#3 / #8**（58.04 与 53.92），AA 智能指数 62.1 / 57.3（Fable 5.2 仍以 64.6 居首）。二者属境外跟踪厂商主线 → 只记档、**不建行不入池**。本行位次降至 #7（55.43/54.17/43.15/41.92）。 ｜**2026-11-21 按用户指令退居历史（is_latest=0）**：OpenAI 11/17 已发 GPT-6.2 Astra（$8/$40，更便宜且四项 llm-stats 全面更高），本行保留作跨代对照。"
   },
   {
    "id": "claude-fable-5-1",
@@ -635,8 +635,8 @@
    "multimodal_in": 1,
    "open_weights": 0,
    "license": "Proprietary",
-   "is_latest": 1,
-   "notes": "OpenAI GPT-6 家族的中档型号（2026-09-22 与 Luna 同日发布）。llm-stats 空降 **#21（49.4/45.6/35.8/36.7）**，**综合能力明显低于同门 Astra（59.5）与上代 GPT-5.6 Sol（54.4）**——是「价格下放」而非换代上位。定价 **$2/$10（缓存输入 $0.20）**，约为 GPT-5.6 Sol 促销价（$4/$20）的**一半**；上下文 1.1M（输入上限 922K）、最大输出 128K、知识截止 2026-04、多模态输入。官方定位「复杂编码与 agentic 工作流」。同批的 GPT-6 Luna（$0.10/$0.50）为高吞吐档、无第三方分，只建 model/price 行并标待评级。本库 2026-09-23 扩池纳入评分。 2026-09-25 复核：OpenAI 官方确认 GPT-6 Sol/Luna 的 $2/$10 与 $0.1/$0.5 为**标准价**（较 5.6 代促销价砍半），非限时促销；Anthropic Opus 5.5 的 $4/$20（缓存读取 $0.20，较 Opus 5 降 60%）亦为标准价。库内两行 USD 价与官方一致，未动。 2026-09-27 复核：OpenAI GPT-6 Sol $2/$10 与 Luna $0.1/$0.5、Anthropic Opus 5.5 $4/$20 均为标准价（非促销），库内 USD 行与官方一致，未动。OpenAI 同期上线 GPT-6 更好的 prompt caching（30 分钟窗口内共享前缀最高 90% 折扣、缓存诊断面板）——产品增强，不改刊例价。 2026-09-28 复核：OpenAI GPT-6 Sol $2/$10 与 Luna $0.1/$0.5、Anthropic Opus 5.5 $4/$20 均为标准价，未动。⚠️ OpenAI DevDay 传闻（agent `O` 约 $1,200/年、Pro Max $500/月、Astra/Sol 降价 50%）**均未证实**，Codex 配额从 7.5B 降到 4.4B tokens/档属产品额度非 token 价。 2026-09-30 复核：OpenAI GPT-6 Sol $2/$10（缓存 $0.20）与 Luna $0.1/$0.5、Anthropic Opus 5.5 $4/$20 均为标准价，未动。🔴 **9/29 OpenAI DevDay 2026 发布 GPT-6.1 Sol**（GPT-6 Sol 的官方升级替代）：$2/缓存输入 $0.10/缓存写 $2.50/输出 $10 —— **与 GPT-6 Sol 同价**，官方定位「以 Astra 五分之一的标准价达到接近 Astra 的智能水平」（Astra $10/$50）；1.05M 上下文 / 128K 输出 / 知识截止 2026-04-30；reasoning.effort 支持 low/medium/high/xhigh/max；>272K 输入进入长上下文档（$4/$15）；官方称 DeepSWE v1.1 达 Astra 水平、较 GPT-6 Sol 最佳成绩 +6.4pt。同场还发布 Dots 常驻智能体（GPT-6 Astra 驱动，$100 Pro 起）、Codex 全面上云 + Codex Security Cloud、Agents API 电脑操作、Decisions API、**新增 $500/月 Pro 档**（原有 $200 档重置额度）、ChatGPT 周活 12 亿；⚠️ **原定 10 月的 GPT-6.1 Astra 因内部安全测试未达标被取消**。→ **境外厂商不主动扩池，GPT-6.1 Sol 只记档；是否以它代际交替 `gpt-6-sol` 提请用户专项授权。**｜**10/04 复核**：**GPT-6.1 Sol** 自 DevDay（9/29）起铺开、10/1 GA，$2/$10 与 GPT-6 Sol **同价**，属典型代际替代（同 9/23 的 mimo-v2.6-pro 性质）→ **是否对 `gpt-6-sol` 做代际交替仍需用户专项授权**，未获授权前维持现状。第三方价格索引显示 OpenAI 价格页已不再单列 `gpt-6-sol`。同场还有 $500/月 Pro 档。｜**10/07 复核**：**GPT-6.1 Sol**（$2/$10，同价替代）持续铺开；10/7「Tibo Day 2」为纯 API 运营动作（Auto-review 全档免费、API 用量等级 5 档压到 3 档、最高档门槛 $1000→$500、Meetings 插件、Decisions API 公测），**无任何模型调价**。是否对 `gpt-6-sol` 做代际交替仍待用户专项授权。 2026-10-11 复核 llm-stats：48.3/45.3/34.3/35.1（−0.7）。⚠️ **10/7 OpenAI 把 GPT-6 Sol/Luna 的「October」版本推向全体 ChatGPT 用户**（替代 GPT-5.6 Sol/Luna），Plus/Pro/Business/Enterprise 用 Sol、Free/Go 自 10/8 用 Luna；**API 侧 SKU 与价格未变**（Sol $2/$10、Luna $0.10/$0.50），属同 ID 换权重批次 → 不建新行、不加价。 2026-10-14 复核 llm-stats：48.2/45.5/33.8/34.9（−0.1）。API 侧 $2/$10 未变（「October」批次为同 ID 换权重，不建新行）。 2026-10-18 复核 llm-stats：48.3/45.3/34.3/35.1（Coding +0.5），全站第 28。API 侧 $2/$10 未变；同门 GPT-6.1 Sol 已升至 #7（53.9），本档为轻量线。 2026-10-21 复核：**本轮跌出 llm-stats 可见 top-30**，不取数、保留 10/18 板行（48.3/45.3/34.3/35.1）。API 侧 $2/$10 未变；同门 GPT-6.1 Sol 仍在 #7（53.5），本档为轻量线。"
+   "is_latest": 0,
+   "notes": "OpenAI GPT-6 家族的中档型号（2026-09-22 与 Luna 同日发布）。llm-stats 空降 **#21（49.4/45.6/35.8/36.7）**，**综合能力明显低于同门 Astra（59.5）与上代 GPT-5.6 Sol（54.4）**——是「价格下放」而非换代上位。定价 **$2/$10（缓存输入 $0.20）**，约为 GPT-5.6 Sol 促销价（$4/$20）的**一半**；上下文 1.1M（输入上限 922K）、最大输出 128K、知识截止 2026-04、多模态输入。官方定位「复杂编码与 agentic 工作流」。同批的 GPT-6 Luna（$0.10/$0.50）为高吞吐档、无第三方分，只建 model/price 行并标待评级。本库 2026-09-23 扩池纳入评分。 2026-09-25 复核：OpenAI 官方确认 GPT-6 Sol/Luna 的 $2/$10 与 $0.1/$0.5 为**标准价**（较 5.6 代促销价砍半），非限时促销；Anthropic Opus 5.5 的 $4/$20（缓存读取 $0.20，较 Opus 5 降 60%）亦为标准价。库内两行 USD 价与官方一致，未动。 2026-09-27 复核：OpenAI GPT-6 Sol $2/$10 与 Luna $0.1/$0.5、Anthropic Opus 5.5 $4/$20 均为标准价（非促销），库内 USD 行与官方一致，未动。OpenAI 同期上线 GPT-6 更好的 prompt caching（30 分钟窗口内共享前缀最高 90% 折扣、缓存诊断面板）——产品增强，不改刊例价。 2026-09-28 复核：OpenAI GPT-6 Sol $2/$10 与 Luna $0.1/$0.5、Anthropic Opus 5.5 $4/$20 均为标准价，未动。⚠️ OpenAI DevDay 传闻（agent `O` 约 $1,200/年、Pro Max $500/月、Astra/Sol 降价 50%）**均未证实**，Codex 配额从 7.5B 降到 4.4B tokens/档属产品额度非 token 价。 2026-09-30 复核：OpenAI GPT-6 Sol $2/$10（缓存 $0.20）与 Luna $0.1/$0.5、Anthropic Opus 5.5 $4/$20 均为标准价，未动。🔴 **9/29 OpenAI DevDay 2026 发布 GPT-6.1 Sol**（GPT-6 Sol 的官方升级替代）：$2/缓存输入 $0.10/缓存写 $2.50/输出 $10 —— **与 GPT-6 Sol 同价**，官方定位「以 Astra 五分之一的标准价达到接近 Astra 的智能水平」（Astra $10/$50）；1.05M 上下文 / 128K 输出 / 知识截止 2026-04-30；reasoning.effort 支持 low/medium/high/xhigh/max；>272K 输入进入长上下文档（$4/$15）；官方称 DeepSWE v1.1 达 Astra 水平、较 GPT-6 Sol 最佳成绩 +6.4pt。同场还发布 Dots 常驻智能体（GPT-6 Astra 驱动，$100 Pro 起）、Codex 全面上云 + Codex Security Cloud、Agents API 电脑操作、Decisions API、**新增 $500/月 Pro 档**（原有 $200 档重置额度）、ChatGPT 周活 12 亿；⚠️ **原定 10 月的 GPT-6.1 Astra 因内部安全测试未达标被取消**。→ **境外厂商不主动扩池，GPT-6.1 Sol 只记档；是否以它代际交替 `gpt-6-sol` 提请用户专项授权。**｜**10/04 复核**：**GPT-6.1 Sol** 自 DevDay（9/29）起铺开、10/1 GA，$2/$10 与 GPT-6 Sol **同价**，属典型代际替代（同 9/23 的 mimo-v2.6-pro 性质）→ **是否对 `gpt-6-sol` 做代际交替仍需用户专项授权**，未获授权前维持现状。第三方价格索引显示 OpenAI 价格页已不再单列 `gpt-6-sol`。同场还有 $500/月 Pro 档。｜**10/07 复核**：**GPT-6.1 Sol**（$2/$10，同价替代）持续铺开；10/7「Tibo Day 2」为纯 API 运营动作（Auto-review 全档免费、API 用量等级 5 档压到 3 档、最高档门槛 $1000→$500、Meetings 插件、Decisions API 公测），**无任何模型调价**。是否对 `gpt-6-sol` 做代际交替仍待用户专项授权。 2026-10-11 复核 llm-stats：48.3/45.3/34.3/35.1（−0.7）。⚠️ **10/7 OpenAI 把 GPT-6 Sol/Luna 的「October」版本推向全体 ChatGPT 用户**（替代 GPT-5.6 Sol/Luna），Plus/Pro/Business/Enterprise 用 Sol、Free/Go 自 10/8 用 Luna；**API 侧 SKU 与价格未变**（Sol $2/$10、Luna $0.10/$0.50），属同 ID 换权重批次 → 不建新行、不加价。 2026-10-14 复核 llm-stats：48.2/45.5/33.8/34.9（−0.1）。API 侧 $2/$10 未变（「October」批次为同 ID 换权重，不建新行）。 2026-10-18 复核 llm-stats：48.3/45.3/34.3/35.1（Coding +0.5），全站第 28。API 侧 $2/$10 未变；同门 GPT-6.1 Sol 已升至 #7（53.9），本档为轻量线。 2026-10-21 复核：**本轮跌出 llm-stats 可见 top-30**，不取数、保留 10/18 板行（48.3/45.3/34.3/35.1）。API 侧 $2/$10 未变；同门 GPT-6.1 Sol 仍在 #7（53.5），本档为轻量线。 ｜**2026-11-21 按用户指令退居历史（is_latest=0）**：GPT-6.2 Sol（$2/$10，同价、四项更高）已入池，本行保留作跨代对照。"
   },
   {
    "id": "grok-4.7",
@@ -827,6 +827,40 @@
    "license": "Proprietary",
    "is_latest": 1,
    "notes": "2026-10-26 发布，Terra 线的最新一代（前代 GPT-5.6 Terra）。标准 API **$1 输入 / $5 输出 / $0.05 缓存读**（缓存写 $1.25），1.05M 上下文 / 128K 输出，模型 ID `gpt-6.1-terra`。Terra 是 OpenAI 面向「高频、低成本批量」的中间档：比 Sol（$2/$10）再便宜一半，能力却未同比例下降——llm-stats 11/18 板 **46.05/46.87/34.82/36.30**（#46），**Reasoning 46.87 反超自家 GPT-6 Sol（42.68）与 GPT-6 Astra（54.17 之下同档不弱）**，Coding 34.82 亦高于 GPT-6 Sol（31.41）——典型的「便宜档在推理上不降级」。本行因用户要求「Sol / Astra / Terra / Luna 四条线都要在图上」而补录（原属库外只记档）。⚠️ 与 GPT-5.6 Terra 同站并存，按「取最新代」原则只收本行。"
+  },
+  {
+   "id": "gpt-6.2-astra",
+   "vendor_id": "openai",
+   "name": "GPT-6.2 Astra",
+   "generation": "6.2",
+   "tier": "flagship",
+   "release_date": "2026-11-17",
+   "release_precision": "day",
+   "arch": "MoE(推测)",
+   "context_in": 1000000,
+   "context_out": 128000,
+   "multimodal_in": 1,
+   "open_weights": 0,
+   "license": "Proprietary",
+   "is_latest": 1,
+   "notes": "2026-11-17 发布，11/21 按用户指令正式入池（11/18 只记档）。价格 $8/$0.40/$40，较 GPT-6 Astra 的 $10/$50 降 20%、缓存输入降 60%；上下文 100 万、原生图片输入。llm-stats 11/18 板空降 **#3**（58.04/55.10/47.39/44.85），Coding 47.4 是当前全站最高档之一；AA 智能指数按默认档（medium）57.0，max 档 62.1。单任务成本（AA 默认档）$1.62。思考档位完整 5 级：low 45.7 / medium 57.0 / high 60.1 / xhigh 61.6 / max 62.1。"
+  },
+  {
+   "id": "gpt-6.2-sol",
+   "vendor_id": "openai",
+   "name": "GPT-6.2 Sol",
+   "generation": "6.2",
+   "tier": "flagship",
+   "release_date": "2026-11-17",
+   "release_precision": "day",
+   "arch": "MoE(推测)",
+   "context_in": 1000000,
+   "context_out": 128000,
+   "multimodal_in": 1,
+   "open_weights": 0,
+   "license": "Proprietary",
+   "is_latest": 1,
+   "notes": "2026-11-17 发布，11/21 按用户指令正式入池。价格 $2/$0.10/$10，与 GPT-6 Sol 持平。llm-stats 11/18 板 **#8**（53.92/49.56/42.58/40.32）；AA 默认档 52.7、max 57.3。单任务成本（AA 默认档）$0.41，比 6.2 Astra 便宜 4 倍。思考档位 5 级：low 40.6 / medium 52.7 / high 54.9 / xhigh 55.7 / max 57.3。"
   }
  ],
  "prices": [
@@ -1641,6 +1675,64 @@
    "input_per_m": 0.445,
    "cached_per_m": 0.022,
    "output_per_m": 2.225,
+   "source_url": "https://wokey.ai/codex-usage-limits"
+  },
+  {
+   "model_id": "gpt-6.2-astra",
+   "region": "INTL",
+   "currency": "USD",
+   "scenario": "standard",
+   "input_per_m": 8.0,
+   "cached_per_m": 0.8,
+   "output_per_m": 40.0,
+   "source_url": "https://openai.com/api/pricing/"
+  },
+  {
+   "model_id": "gpt-6.2-astra",
+   "region": "INTL",
+   "currency": "CNY",
+   "scenario": "estimated",
+   "input_per_m": 56.8,
+   "output_per_m": 284.0,
+   "source_url": "USD 8/40 @ 7.1"
+  },
+  {
+   "model_id": "gpt-6.2-astra",
+   "region": "INTL",
+   "currency": "CNY",
+   "scenario": "plan_equiv",
+   "input_per_m": 3.56,
+   "cached_per_m": 0.356,
+   "output_per_m": 17.801,
+   "source_url": "https://wokey.ai/codex-usage-limits"
+  },
+  {
+   "model_id": "gpt-6.2-sol",
+   "region": "INTL",
+   "currency": "USD",
+   "scenario": "standard",
+   "input_per_m": 2.0,
+   "cached_per_m": 0.2,
+   "output_per_m": 10.0,
+   "source_url": "https://openai.com/api/pricing/"
+  },
+  {
+   "model_id": "gpt-6.2-sol",
+   "region": "INTL",
+   "currency": "CNY",
+   "scenario": "estimated",
+   "input_per_m": 14.2,
+   "output_per_m": 71.0,
+   "source_url": "USD 2/10 @ 7.1"
+  },
+  {
+   "model_id": "gpt-6.2-sol",
+   "region": "INTL",
+   "currency": "CNY",
+   "scenario": "plan_equiv",
+   "input_per_m": 0.89,
+   "cached_per_m": 0.089,
+   "output_per_m": 4.45,
    "source_url": "https://wokey.ai/codex-usage-limits"
   }
  ],
@@ -4660,6 +4752,86 @@
    "leaderboard": "llm-stats-Agent",
    "metric": "ts_agent",
    "value": 28.38,
+   "board_date": "2026-11-18",
+   "confidence": "verified",
+   "is_overall": 0,
+   "source_url": "https://llm-stats.com/leaderboards/llm-leaderboard"
+  },
+  {
+   "model_id": "gpt-6.2-astra",
+   "leaderboard": "llm-stats-Overall",
+   "metric": "ts_overall",
+   "value": 58.04,
+   "board_date": "2026-11-18",
+   "confidence": "verified",
+   "is_overall": 1,
+   "source_url": "https://llm-stats.com/leaderboards/llm-leaderboard"
+  },
+  {
+   "model_id": "gpt-6.2-astra",
+   "leaderboard": "llm-stats-Reasoning",
+   "metric": "ts_reasoning",
+   "value": 55.1,
+   "board_date": "2026-11-18",
+   "confidence": "verified",
+   "is_overall": 0,
+   "source_url": "https://llm-stats.com/leaderboards/llm-leaderboard"
+  },
+  {
+   "model_id": "gpt-6.2-astra",
+   "leaderboard": "llm-stats-Coding",
+   "metric": "ts_coding",
+   "value": 47.39,
+   "board_date": "2026-11-18",
+   "confidence": "verified",
+   "is_overall": 0,
+   "source_url": "https://llm-stats.com/leaderboards/llm-leaderboard"
+  },
+  {
+   "model_id": "gpt-6.2-astra",
+   "leaderboard": "llm-stats-Agent",
+   "metric": "ts_agent",
+   "value": 44.85,
+   "board_date": "2026-11-18",
+   "confidence": "verified",
+   "is_overall": 0,
+   "source_url": "https://llm-stats.com/leaderboards/llm-leaderboard"
+  },
+  {
+   "model_id": "gpt-6.2-sol",
+   "leaderboard": "llm-stats-Overall",
+   "metric": "ts_overall",
+   "value": 53.92,
+   "board_date": "2026-11-18",
+   "confidence": "verified",
+   "is_overall": 1,
+   "source_url": "https://llm-stats.com/leaderboards/llm-leaderboard"
+  },
+  {
+   "model_id": "gpt-6.2-sol",
+   "leaderboard": "llm-stats-Reasoning",
+   "metric": "ts_reasoning",
+   "value": 49.56,
+   "board_date": "2026-11-18",
+   "confidence": "verified",
+   "is_overall": 0,
+   "source_url": "https://llm-stats.com/leaderboards/llm-leaderboard"
+  },
+  {
+   "model_id": "gpt-6.2-sol",
+   "leaderboard": "llm-stats-Coding",
+   "metric": "ts_coding",
+   "value": 42.58,
+   "board_date": "2026-11-18",
+   "confidence": "verified",
+   "is_overall": 0,
+   "source_url": "https://llm-stats.com/leaderboards/llm-leaderboard"
+  },
+  {
+   "model_id": "gpt-6.2-sol",
+   "leaderboard": "llm-stats-Agent",
+   "metric": "ts_agent",
+   "value": 40.32,
    "board_date": "2026-11-18",
    "confidence": "verified",
    "is_overall": 0,
