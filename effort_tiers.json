@@ -1,42 +1,74 @@
 {
  "_meta": {
-  "source": "artificialanalysis.ai model pages (SSR payload)",
-  "captured": "2026-11-21",
+  "source": "artificialanalysis.ai model pages (SSR payload), fetched 2026-11-21",
   "index": "AA Intelligence Index (current build)",
-  "note": "tier y = composite + (aa_tier - aa_top); price unchanged",
-  "mapped": 9
+  "anchor": "vendor default effort (AA release.defaultEffort)",
+  "placement": "tier y = composite + (aa_tier - aa_anchor);  tier x = price * xmul",
+  "xmul": "cost per intelligence-index task at that tier / same at anchor (AA intelligenceIndexCostPerTask.cost.total; fallback: output tokens per task)",
+  "note": "delta-only translation: the AA index and this composite are not the same ruler, so only tier-to-tier differences are mapped, never absolute values.",
+  "mapped": 9,
+  "dropped_tiers": {
+   "gemini-3-8-flash": [
+    "low"
+   ]
+  }
  },
  "models": {
   "claude-opus-5-5": {
    "aa_name": "Claude Opus 5.5",
    "aa_slug": "claude-opus-5-5",
    "aa_default": "medium",
-   "top": "max",
+   "anchor": "medium",
    "tiers": [
     {
      "effort": "low",
      "level": 20,
-     "aa": 34.75
+     "aa": 34.75,
+     "dy": -13.46,
+     "xmul": 0.398,
+     "out_tok": 19059,
+     "cost_per_task": 0.9755,
+     "anchor": false
     },
     {
      "effort": "medium",
      "level": 30,
-     "aa": 48.21
+     "aa": 48.21,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": 43816,
+     "cost_per_task": 2.4511,
+     "anchor": true
     },
     {
      "effort": "high",
      "level": 40,
-     "aa": 51.84
+     "aa": 51.84,
+     "dy": 3.63,
+     "xmul": 1.414,
+     "out_tok": 60070,
+     "cost_per_task": 3.4647,
+     "anchor": false
     },
     {
      "effort": "xhigh",
      "level": 50,
-     "aa": 57.44
+     "aa": 57.44,
+     "dy": 9.23,
+     "xmul": 2.467,
+     "out_tok": 103395,
+     "cost_per_task": 6.0472,
+     "anchor": false
     },
     {
      "effort": "max",
      "level": 60,
-     "aa": 59.11
+     "aa": 59.11,
+     "dy": 10.9,
+     "xmul": 4.095,
+     "out_tok": 173312,
+     "cost_per_task": 10.0364,
+     "anchor": false
     }
    ]
   },
@@ -44,32 +76,57 @@
    "aa_name": "GPT-6 Astra",
    "aa_slug": "gpt-6-astra",
    "aa_default": "medium",
-   "top": "max",
+   "anchor": "medium",
    "tiers": [
     {
      "effort": "low",
      "level": 20,
-     "aa": 43.33
+     "aa": 43.33,
+     "dy": -8.22,
+     "xmul": 0.521,
+     "out_tok": 9125,
+     "cost_per_task": 1.4237,
+     "anchor": false
     },
     {
      "effort": "medium",
      "level": 30,
-     "aa": 51.55
+     "aa": 51.55,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": 18051,
+     "cost_per_task": 2.7324,
+     "anchor": true
     },
     {
      "effort": "high",
      "level": 40,
-     "aa": 54.85
+     "aa": 54.85,
+     "dy": 3.3,
+     "xmul": 1.185,
+     "out_tok": 23133,
+     "cost_per_task": 3.2386,
+     "anchor": false
     },
     {
      "effort": "xhigh",
      "level": 50,
-     "aa": 55.31
+     "aa": 55.31,
+     "dy": 3.76,
+     "xmul": 1.339,
+     "out_tok": 26723,
+     "cost_per_task": 3.6589,
+     "anchor": false
     },
     {
      "effort": "max",
      "level": 60,
-     "aa": 56.85
+     "aa": 56.85,
+     "dy": 5.3,
+     "xmul": 2.285,
+     "out_tok": 51973,
+     "cost_per_task": 6.2447,
+     "anchor": false
     }
    ]
   },
@@ -77,32 +134,57 @@
    "aa_name": "GPT-6.1 Terra",
    "aa_slug": "gpt-6-1-terra",
    "aa_default": "medium",
-   "top": "max",
+   "anchor": "medium",
    "tiers": [
     {
      "effort": "low",
      "level": 20,
-     "aa": 29.42
+     "aa": 29.42,
+     "dy": -8.75,
+     "xmul": 0.423,
+     "out_tok": 4422,
+     "cost_per_task": 0.0713,
+     "anchor": false
     },
     {
      "effort": "medium",
      "level": 30,
-     "aa": 38.17
+     "aa": 38.17,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": 10875,
+     "cost_per_task": 0.1688,
+     "anchor": true
     },
     {
      "effort": "high",
      "level": 40,
-     "aa": 42.43
+     "aa": 42.43,
+     "dy": 4.26,
+     "xmul": 1.536,
+     "out_tok": 16746,
+     "cost_per_task": 0.2593,
+     "anchor": false
     },
     {
      "effort": "xhigh",
      "level": 50,
-     "aa": 45.25
+     "aa": 45.25,
+     "dy": 7.08,
+     "xmul": 2.374,
+     "out_tok": 26199,
+     "cost_per_task": 0.4007,
+     "anchor": false
     },
     {
      "effort": "max",
      "level": 60,
-     "aa": 51.33
+     "aa": 51.33,
+     "dy": 13.16,
+     "xmul": 5.694,
+     "out_tok": 59883,
+     "cost_per_task": 0.9611,
+     "anchor": false
     }
    ]
   },
@@ -110,32 +192,57 @@
    "aa_name": "GPT-6 Luna",
    "aa_slug": "gpt-6-luna",
    "aa_default": "medium",
-   "top": "max",
+   "anchor": "medium",
    "tiers": [
     {
      "effort": "low",
      "level": 20,
-     "aa": 9.67
+     "aa": 9.67,
+     "dy": -8.78,
+     "xmul": 0.121,
+     "out_tok": 3295,
+     "cost_per_task": 0.0051,
+     "anchor": false
     },
     {
      "effort": "medium",
      "level": 30,
-     "aa": 18.45
+     "aa": 18.45,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": 19823,
+     "cost_per_task": 0.0422,
+     "anchor": true
     },
     {
      "effort": "high",
      "level": 40,
-     "aa": 21.43
+     "aa": 21.43,
+     "dy": 2.98,
+     "xmul": 1.729,
+     "out_tok": 32839,
+     "cost_per_task": 0.0729,
+     "anchor": false
     },
     {
      "effort": "xhigh",
      "level": 50,
-     "aa": 23.45
+     "aa": 23.45,
+     "dy": 5.0,
+     "xmul": 2.467,
+     "out_tok": 43893,
+     "cost_per_task": 0.1041,
+     "anchor": false
     },
     {
      "effort": "max",
      "level": 60,
-     "aa": 27.86
+     "aa": 27.86,
+     "dy": 9.41,
+     "xmul": 3.601,
+     "out_tok": 75296,
+     "cost_per_task": 0.152,
+     "anchor": false
     }
    ]
   },
@@ -143,22 +250,27 @@
    "aa_name": "Gemini 3.8 Flash",
    "aa_slug": "gemini-3-8-flash",
    "aa_default": "medium",
-   "top": "high",
+   "anchor": "medium",
    "tiers": [
-    {
-     "effort": "low",
-     "level": 20,
-     "aa": 22.55
-    },
     {
      "effort": "medium",
      "level": 30,
-     "aa": 30.08
+     "aa": 30.08,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": 82068,
+     "cost_per_task": 6.2586,
+     "anchor": true
     },
     {
      "effort": "high",
      "level": 40,
-     "aa": 30.85
+     "aa": 30.85,
+     "dy": 0.77,
+     "xmul": 1.241,
+     "out_tok": 98939,
+     "cost_per_task": 7.766,
+     "anchor": false
     }
    ]
   },
@@ -166,22 +278,37 @@
    "aa_name": "Grok 4.7",
    "aa_slug": "grok-4-7",
    "aa_default": "high",
-   "top": "xhigh",
+   "anchor": "high",
    "tiers": [
     {
      "effort": "low",
      "level": 20,
-     "aa": 31.13
+     "aa": 31.13,
+     "dy": -4.08,
+     "xmul": 0.473,
+     "out_tok": 42669,
+     "cost_per_task": 2.9222,
+     "anchor": false
     },
     {
      "effort": "high",
      "level": 40,
-     "aa": 35.21
+     "aa": 35.21,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": 89127,
+     "cost_per_task": 6.1836,
+     "anchor": true
     },
     {
      "effort": "xhigh",
      "level": 50,
-     "aa": 35.49
+     "aa": 35.49,
+     "dy": 0.28,
+     "xmul": 1.257,
+     "out_tok": 104530,
+     "cost_per_task": 7.7715,
+     "anchor": false
     }
    ]
   },
@@ -189,17 +316,27 @@
    "aa_name": "GLM-5.3",
    "aa_slug": "glm-5-3",
    "aa_default": "max",
-   "top": "max",
+   "anchor": "max",
    "tiers": [
     {
      "effort": "low",
      "level": 20,
-     "aa": 23.11
+     "aa": 23.11,
+     "dy": -8.54,
+     "xmul": 0.314,
+     "out_tok": 51985,
+     "cost_per_task": 1.5749,
+     "anchor": false
     },
     {
      "effort": "max",
      "level": 60,
-     "aa": 31.65
+     "aa": 31.65,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": 118986,
+     "cost_per_task": 5.0093,
+     "anchor": true
     }
    ]
   },
@@ -207,17 +344,27 @@
    "aa_name": "DeepSeek V4.1 Flash 1017",
    "aa_slug": "deepseek-v4-1-flash-1017",
    "aa_default": "high",
-   "top": "max",
+   "anchor": "high",
    "tiers": [
     {
      "effort": "high",
      "level": 40,
-     "aa": 28.64
+     "aa": 28.64,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": 110430,
+     "cost_per_task": 0.4562,
+     "anchor": true
     },
     {
      "effort": "max",
      "level": 60,
-     "aa": 32.59
+     "aa": 32.59,
+     "dy": 3.95,
+     "xmul": 1.32,
+     "out_tok": 138961,
+     "cost_per_task": 0.6021,
+     "anchor": false
     }
    ]
   },
@@ -225,17 +372,27 @@
    "aa_name": "DeepSeek V4 Pro 0813",
    "aa_slug": "deepseek-v4-pro",
    "aa_default": "high",
-   "top": "max",
+   "anchor": "high",
    "tiers": [
     {
      "effort": "high",
      "level": 40,
-     "aa": 20.8
+     "aa": 20.8,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": 70314,
+     "cost_per_task": 0.8485,
+     "anchor": true
     },
     {
      "effort": "max",
      "level": 60,
-     "aa": 23.06
+     "aa": 23.06,
+     "dy": 2.26,
+     "xmul": 2.085,
+     "out_tok": 98732,
+     "cost_per_task": 1.7691,
+     "anchor": false
     }
    ]
   }

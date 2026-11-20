@@ -37,9 +37,14 @@ EFFORT = {}
 if os.path.exists(EFFORT_FILE):
     _e = json.load(open(EFFORT_FILE, encoding="utf-8"))
     for _mid, _d in _e.get("models", {}).items():
-        _top = _d["tiers"][-1]
-        EFFORT[_mid] = [{"effort": t["effort"], "aa": t["aa"],
-                         "dy": round(t["aa"] - _top["aa"], 2)} for t in _d["tiers"]]
+        # v2 (2026-11-21): anchor = vendor DEFAULT effort, so the model point is the
+        # config you actually buy; lower rungs sit down-left, higher rungs up-right.
+        # xmul = cost-per-task ratio vs the anchor (thinking burns tokens).
+        EFFORT[_mid] = {"anchor": _d.get("anchor"),
+                        "tiers": [{"effort": t["effort"], "aa": t["aa"], "dy": t["dy"],
+                                   "xmul": t.get("xmul", 1.0),
+                                   "anchor": bool(t.get("anchor"))}
+                                  for t in _d["tiers"]]}
 TPL = os.path.join(HERE, "scatter_tpl.html")
 OUT = os.path.join(HERE, "scatter_20261121.html")
 DATE = "2026-11-21"
@@ -136,8 +141,9 @@ for r in rows:
         "price": r["output_per_m"],
         "mm": bool(r["multimodal_in"]),
         "vendor": VENDOR_CN.get(r["vid"], r["vid"]),
-        "tiers": ([{"effort": t["effort"], "aa": t["aa"], "y": round(r["score"] + t["dy"], 2)}
-                   for t in EFFORT.get(r["mid"], [])] or None),
+        "tiers": ([{"effort": t["effort"], "aa": t["aa"], "dy": t["dy"],
+                    "xmul": t["xmul"], "anchor": t["anchor"]}
+                   for t in EFFORT[r["mid"]]["tiers"]] if r["mid"] in EFFORT else None),
     })
 
 with open(os.path.join(HERE, "history.json"), encoding="utf-8") as f:
@@ -340,42 +346,91 @@ const chart = new Chart(ctx, {
       });
 
       // ---- reasoning-effort ladder for the hovered model ----
+      // LOCAL INSET, deliberately NOT plotted in data coordinates:
+      //   * effort deltas reach +-13 composite points (Opus low<->max) while the whole
+      //     y axis spans ~30 points -> a true-scale ladder leaves the plot;
+      //   * cost multipliers reach 5.7x = 0.75 decades of the log x axis -> same problem.
+      // So the ladder is scaled into a fixed pixel budget around the point (shrunk to
+      // the room actually available), and each rung is LABELLED with the real numbers:
+      // AA index + cost multiplier vs the vendor-default tier.
+      const rungBoxes = [];
       if(hoverId){
         const hd = chart.data.datasets[0].data.find(p=> p._name === hoverId);
         if(hd && hd._tiers && hd._tiers.length > 1){
-          const px = x.getPixelForValue(hd.x);
-          // the top rung IS the model's own point -> drop it so the point label
-          // and the rung label do not fight for the same spot
-          const lows = hd._tiers.slice(0, -1);
-          const ys = lows.map(t=> y.getPixelForValue(t.y));
-          const topPy = y.getPixelForValue(hd.y);
-          const vis2 = lows.map((t,i)=> ({t, py:ys[i]}))
-                        .filter(o=> o.py >= (chart.chartArea?chart.chartArea.top:0) - 2 &&
-                                    o.py <= (chart.chartArea?chart.chartArea.bottom:chart.height) + 2);
-          c.save();
-          c.setLineDash([3,3]); c.lineWidth = 1;
-          c.strokeStyle = hexA(vcolor(hd._vendor), 0.6);
-          c.beginPath(); c.moveTo(px, Math.min(topPy, ...ys)); c.lineTo(px, Math.max(...ys)); c.stroke();
-          c.setLineDash([]);
-          c.font = "10px -apple-system,Segoe UI,sans-serif";
-          c.textBaseline = "middle";
-          vis2.forEach(o=>{
-            c.beginPath(); c.arc(px, o.py, 4, 0, Math.PI*2);
-            c.fillStyle = hexA(vcolor(hd._vendor), 0.85); c.fill();
-            c.strokeStyle = "#ffffff"; c.lineWidth = 1; c.stroke();
-            const right = px > chart.width - 90;
-            c.textAlign = right ? "right" : "left";
-            c.fillStyle = "#b9bfd4";
-            c.fillText(o.t.effort + " " + o.t.aa.toFixed(0), px + (right?-9:9), o.py);
-          });
-          c.restore();
+          const rows = hd._tiers.filter(t=> !t.anchor);
+          const A0 = chart.chartArea || {left:0, top:0, right:chart.width, bottom:chart.height};
+          if(rows.length){
+            const px0 = x.getPixelForValue(hd.x), py0 = y.getPixelForValue(hd.y);
+            const up = Math.max(0, ...rows.map(t=> t.dy));
+            const dn = Math.max(0, ...rows.map(t=> -t.dy));
+            const xr = Math.max(0, ...rows.map(t=> Math.log(t.xmul || 1)));
+            const xl = Math.max(0, ...rows.map(t=> -Math.log(t.xmul || 1)));
+            // pixel budget per direction, clamped to the room actually available so a
+            // rung can never be pushed outside the plot (the top point of the cloud has
+            // little space above it -> that half compresses instead of flipping over)
+            const clamp = (v,lo,hi)=> Math.max(lo, Math.min(hi, v));
+            const UP = clamp(py0 - A0.top - 8, 24, 62);
+            const DN = clamp(A0.bottom - py0 - 8, 24, 44);
+            const WMAX = 56;
+            // screen y grows DOWNWARD: a positive dy (stronger) must subtract pixels
+            const dyPx = t => t.dy === 0 ? 0
+                           : t.dy > 0 ? -(up ? (t.dy/up)*UP : 0) : -(dn ? (t.dy/dn)*DN : 0);
+            const dxPx = t => { const l = Math.log(t.xmul || 1);
+              return l === 0 ? 0 : l > 0 ? (xr ? (l/xr)*WMAX : 0) : (xl ? (l/xl)*WMAX : 0); };
+            const ax = px0, ay = py0;
+            const rp = rows.map(t=> ({t, px: px0 + dxPx(t), py: ay + dyPx(t)}));
+            c.save();
+            c.setLineDash([3,3]); c.lineWidth = 1;
+            c.strokeStyle = hexA(vcolor(hd._vendor), 0.55);
+            c.beginPath(); c.moveTo(ax, ay);
+            rp.slice().sort((a,b)=> a.t.aa - b.t.aa).forEach(o=> c.lineTo(o.px, o.py));
+            c.stroke();
+            c.setLineDash([]);
+            // hollow ring marks the anchored (vendor-default) tier
+            c.beginPath(); c.arc(ax, ay, 3.2, 0, Math.PI*2);
+            c.fillStyle = "#0e0e18"; c.fill();
+            c.strokeStyle = hexA(vcolor(hd._vendor), 0.95); c.lineWidth = 1.4; c.stroke();
+            c.font = "10px -apple-system,Segoe UI,sans-serif"; c.textBaseline = "middle";
+            // rung labels must dodge the markers too (a rung often lands right next to
+            // another vendor's dot), so try 6 anchors and keep the first free one
+            const mk = vis.map(v=>({x0:v.px-v.r-1, y0:v.py-v.r-1, x1:v.px+v.r+1, y1:v.py+v.r+1}));
+            const hitB = b => mk.some(q=> !(b.x1<q.x0 || b.x0>q.x1 || b.y1<q.y0 || b.y0>q.y1))
+                            || rungBoxes.some(q=> !(b.x1<q.x0 || b.x0>q.x1 || b.y1<q.y0 || b.y0>q.y1));
+            rp.forEach(o=>{
+              c.beginPath(); c.arc(o.px, o.py, 3.6, 0, Math.PI*2);
+              c.fillStyle = hexA(vcolor(hd._vendor), 0.9); c.fill();
+              c.strokeStyle = "#0e0e18"; c.lineWidth = 1; c.stroke();
+              const txt = o.t.effort + " " + o.t.aa.toFixed(0) + " · ×" + o.t.xmul.toFixed(1);
+              const w = c.measureText(txt).width, hh = 11;
+              let box = null, tx = 0, ty = o.py, al = "left";
+              for(const cnd of [[1,0],[-1,0],[1,-1],[1,1],[-1,-1],[-1,1]]){
+                const sx = cnd[0], sy2 = cnd[1];
+                const bx0 = sx > 0 ? o.px + 6 : o.px - 6 - w;
+                const by = o.py + sy2 * hh;
+                if(bx0 < 2 || bx0 + w > chart.width - 2) continue;
+                const b = {x0: bx0, y0: by - hh/2 - 1, x1: bx0 + w, y1: by + hh/2 + 1};
+                if(hitB(b)) continue;
+                box = b; tx = sx > 0 ? o.px + 7 : o.px - 7; ty = by; al = sx > 0 ? "left" : "right"; break;
+              }
+              if(!box){
+                const sx = (o.px + 6 + w < chart.width - 4) ? 1 : -1;
+                const bx0 = sx > 0 ? o.px + 6 : o.px - 6 - w;
+                box = {x0: bx0, y0: o.py - hh/2 - 1, x1: bx0 + w, y1: o.py + hh/2 + 1};
+                tx = sx > 0 ? o.px + 7 : o.px - 7; al = sx > 0 ? "left" : "right";
+              }
+              c.textAlign = al; c.fillStyle = "#c9cfe4"; c.fillText(txt, tx, ty);
+              rungBoxes.push(box);
+            });
+            c.restore();
+          }
         }
       }
 
       if(!showLabels) return;
 
       // obstacles = every marker box; labels are added to the same list as they land
-      const boxes = vis.map(v=>({x0:v.px-v.r-1, y0:v.py-v.r-1, x1:v.px+v.r+1, y1:v.py+v.r+1}));
+      const boxes = vis.map(v=>({x0:v.px-v.r-1, y0:v.py-v.r-1, x1:v.px+v.r+1, y1:v.py+v.r+1}))
+                     .concat(rungBoxes);
       const area = chart.chartArea || {left:0, top:0, right:chart.width, bottom:chart.height};
       const PAD = 2, GAP = 8, GAP2 = 15, FS = 11;
       c.save(); c.font = FS+"px -apple-system,Segoe UI,sans-serif";
@@ -585,6 +640,15 @@ function fitView(){
   if(y1-y0 < 1e-9){ y0-=2; y1+=2; }                 // a single y value: give it room
   const yp=(y1-y0)*0.08;
   oy.min=y0-yp; oy.max=y1+yp;
+  // The reasoning-effort ladder is drawn ABOVE the point for higher efforts. If the
+  // top model of the cloud sits flush against the frame there is no room for that
+  // half of the ladder, so reserve a slice of headroom for the tallest ladder among
+  // the visible points (BENCH tab only; the Elo tab has no ladders).
+  if(TAB !== 'elo'){
+    let upMax = 0;
+    pts.forEach(p=>{ if(p._tiers) p._tiers.forEach(t=>{ if(t.dy > upMax) upMax = t.dy; }); });
+    if(upMax > 0) oy.max = Math.max(oy.max, y1 + upMax*0.55);
+  }
   chart.update('none');
 }
 function resetView(){ fitView(); }

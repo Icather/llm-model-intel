@@ -68,12 +68,13 @@ plan-equivalent = API list price × k        k = monthly fee ÷ monthly API-equi
 
 ## Reasoning-effort ladders (on hover)
 
-Hover a point and a dashed vertical line drops from it, marking where the **other reasoning efforts** (low / medium / high / xhigh / max) sit:
+Hover a point and a **diagonal ladder** unfolds from it: stronger efforts sit **up and to the right** (more capable *and* more expensive), weaker efforts sit **down and to the left** (cheaper, less capable).
 
-- data comes from each model's page on Artificial Analysis, which splits the Intelligence Index by reasoning effort;
-- placement: `tier y = model composite + (AA tier − AA top tier)` — price does not change, so the ladder is vertical, and the top tier *is* the model's own point (not drawn twice);
-- **only models where AA publishes more than one effort get a ladder** (9 of 37 today). Non-reasoning models, and models with a single fixed configuration, have no ladder;
-- this is an **estimated placement**: the AA index and this composite are not the same ruler, so only the *delta between tiers* is translated, never the absolute value.
+- data comes from each model's page on Artificial Analysis: its Intelligence Index split by reasoning effort, plus the **cost of finishing one index task** at that effort;
+- **the anchor is the vendor's default effort** (AA `release.defaultEffort`). The plotted point is the configuration the list price actually buys, so the ladder opens **both up and down**, not only downward;
+- **horizontal offset** = `list price × cost multiplier`, where the multiplier is that tier's cost per task over the anchor's (AA `intelligenceIndexCostPerTask`; output tokens per task as fallback). More thinking means more reasoning tokens, which is why higher efforts drift right;
+- **vertical offset** is the AA index delta, scaled. It is **not** mapped onto the plot's y axis: Opus spans 24 index points from low to max while the whole axis spans ~40, so a true-scale ladder would leave the frame. The ladder is therefore a **local inset** attached to the point, and every rung is labelled with the real numbers (AA index · cost multiplier, anchor = 1.0);
+- **only models where AA publishes more than one effort get a ladder** (9 of 37 today). Kimi, Qwen4, MiniMax and MiMo expose a single effort on AA, so hovering them shows nothing. GLM-5.3's default *is* its top effort (max), so it only has the downward half; both DeepSeek models default to high, so they only have the upward half. That is vendor configuration, not missing data.
 
 ## Quick start
 
