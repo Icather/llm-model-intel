@@ -46,6 +46,8 @@ __CHARTJS__
           border-radius: 999px; padding: 4px 10px 4px 7px; transition: .13s; user-select: none; }
   .chip:hover { border-color: #6a6ab0; color: #fff; }
   .chip.on { background: #33335c; border-color: #8484e0; color: #fff; }
+  .chip:not(.on) { opacity: .45; }
+  .chip.all { border-style: dashed; font-size: 11px; padding: 2px 8px; }
   .chip i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
 
   .chart-box { position: relative; width: 100%; height: 560px; cursor: grab; user-select: none; }
@@ -129,7 +131,7 @@ __CHARTJS__
       <button id="wheelmode" class="ghost" title="切换滚轮行为：缩放 / 平移">滚轮：缩放</button>
     </div>
 
-    <div class="bar" id="chips"><span class="lab">厂商聚焦</span></div>
+    <div class="bar" id="chips"><span class="lab">显示厂商</span></div>
 
     <div class="chart-box" id="box"><canvas id="c"></canvas></div>
     <div class="hint">拖拽 = 平移 · 滚轮 = 缩放（锚点跟随指针）· X＋/− 与 Y＋/− = 单轴调比例 · 双击 / 复位 = 数据自适应全览 · 「滚轮」按钮可切换为平移模式</div>
@@ -143,7 +145,7 @@ __CHARTJS__
       <span class="k">≈</span>名字带 ≈ ＝ 单任务成本为<b>估算</b>（AA 未实测该模型）
       <span class="mk line"></span>悬停某点 → 思考档位阶梯：右上＝更强更贵，左下＝更弱更省（标签为 AA 指数 · 成本倍数）
       <br>
-      <span class="k">颜色 = 厂商</span>，与下方聚焦按钮一致；点击厂商可只看它的轨迹。历史代能力分与单任务成本均为<b>估算</b>；当前代单任务成本有 23 个厂商实测、14 个推算（含 4 个同价同门代理），估算值在心部留空心标记。
+      <span class="k">颜色 = 厂商</span>，与下方按钮一致；点击厂商名可<b>隐藏/显示</b>该厂商（默认全显示），最右「全部」一键复位。历史代能力分与单任务成本均为<b>估算</b>；当前代单任务成本有 23 个厂商实测、14 个推算（含 4 个同价同门代理），估算值在心部留空心标记。
     </div>
 
     <div class="insight" id="insight"></div>

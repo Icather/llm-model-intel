@@ -15,7 +15,7 @@ Interactivity (fully self-implemented; log-axis correct):
 - Wheel = zoom anchored at pointer (toggleable to pan, for trackpad users)
 - ＋/− zoom both axes; X＋/X−/Y＋/Y− zoom a single axis (aspect control)
 - Default view on load & 复位 / double-click = fit to currently visible data
-- Generation toggle (-1..-4), lane filter, vendor focus chips
+- Generation toggle (-1..-4), lane filter, vendor VISIBILITY chips (multi-select)
 - Evolution lines (same vendor + same lane, arrow -> newer), show/hide
 - Name labels, pareto (value) frontier toggles
 
@@ -319,7 +319,9 @@ let datasets = makeDatasets(curPts, histPts);
 let eloDatasets = null;   // built lazily on first Elo-tab switch
 
 // ---- state (declared BEFORE new Chart: afterDatasetsDraw reads showLabels at first render) ----
-let showLabels = true, repOnly = true, laneFilter = 'all', focusVendor = null;
+let showLabels = true, repOnly = true, laneFilter = 'all';
+// vendor chips are VISIBILITY toggles (all on by default), not a single-vendor focus
+const hiddenVendors = new Set();
 let hoverId = null;   // model name whose effort ladder is being shown
 let wheelMode = 'zoom';                 // 'zoom' (default) | 'pan' (trackpad friendly)
 
@@ -522,7 +524,7 @@ const chart = new Chart(ctx, {
 [1,2,3,4].forEach(g=> chart.setDatasetVisibility(g,false));
 
 function laneOk(l){ return laneFilter==='all' || laneFilter===l; }
-function vendorOk(v){ return !focusVendor || v===focusVendor; }
+function vendorOk(v){ return !hiddenVendors.has(v); }
 
 let TAB = 'bench';   // 'bench' | 'elo'
 
@@ -817,15 +819,28 @@ document.getElementById('btn-label').onclick=()=>{
 const vendors=[...new Set([...curPts,...histPts].map(p=>p._vendor))];
 const chipBox=document.getElementById('chips');
 vendors.forEach(v=>{
-  const c=document.createElement('span'); c.className='chip';
+  const c=document.createElement('span'); c.className='chip on';
+  c.title = '点击隐藏 / 显示该厂商';
   c.innerHTML='<i style="background:'+vcolor(v)+'"></i>'+v;
   c.onclick=()=>{
-    if(focusVendor===v){ focusVendor=null; c.classList.remove('on'); }
-    else { focusVendor=v; document.querySelectorAll('#chips .chip').forEach(x=>x.classList.remove('on')); c.classList.add('on'); }
+    if(hiddenVendors.has(v)){ hiddenVendors.delete(v); c.classList.add('on'); }
+    else { hiddenVendors.add(v); c.classList.remove('on'); }
+    syncAllChip();
     applyFilters();
   };
   chipBox.appendChild(c);
 });
+// "全部" resets the visibility set -- with 14 vendors, undoing a few clicks by hand
+// is the annoying case.
+const allChip = document.createElement('span');
+allChip.className = 'chip all'; allChip.title = '显示全部厂商';
+allChip.textContent = '全部';
+allChip.onclick = ()=>{ hiddenVendors.clear();
+  document.querySelectorAll('#chips .chip:not(.all)').forEach(x=> x.classList.add('on'));
+  syncAllChip(); applyFilters(); };
+chipBox.appendChild(allChip);
+function syncAllChip(){ allChip.classList.toggle('on', hiddenVendors.size === 0); }
+syncAllChip();
 
 // ---- meta + insight ----
 document.getElementById('m1').textContent = META.methodology;
