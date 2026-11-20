@@ -64,3 +64,4 @@ __pycache__/
 patch*.py
 update_bilibili_*.py
 update_intel_20260831.py
+_hover*.png

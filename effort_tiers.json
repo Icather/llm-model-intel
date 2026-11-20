@@ -1,0 +1,243 @@
+{
+ "_meta": {
+  "source": "artificialanalysis.ai model pages (SSR payload)",
+  "captured": "2026-11-21",
+  "index": "AA Intelligence Index (current build)",
+  "note": "tier y = composite + (aa_tier - aa_top); price unchanged",
+  "mapped": 9
+ },
+ "models": {
+  "claude-opus-5-5": {
+   "aa_name": "Claude Opus 5.5",
+   "aa_slug": "claude-opus-5-5",
+   "aa_default": "medium",
+   "top": "max",
+   "tiers": [
+    {
+     "effort": "low",
+     "level": 20,
+     "aa": 34.75
+    },
+    {
+     "effort": "medium",
+     "level": 30,
+     "aa": 48.21
+    },
+    {
+     "effort": "high",
+     "level": 40,
+     "aa": 51.84
+    },
+    {
+     "effort": "xhigh",
+     "level": 50,
+     "aa": 57.44
+    },
+    {
+     "effort": "max",
+     "level": 60,
+     "aa": 59.11
+    }
+   ]
+  },
+  "gpt-6-astra": {
+   "aa_name": "GPT-6 Astra",
+   "aa_slug": "gpt-6-astra",
+   "aa_default": "medium",
+   "top": "max",
+   "tiers": [
+    {
+     "effort": "low",
+     "level": 20,
+     "aa": 43.33
+    },
+    {
+     "effort": "medium",
+     "level": 30,
+     "aa": 51.55
+    },
+    {
+     "effort": "high",
+     "level": 40,
+     "aa": 54.85
+    },
+    {
+     "effort": "xhigh",
+     "level": 50,
+     "aa": 55.31
+    },
+    {
+     "effort": "max",
+     "level": 60,
+     "aa": 56.85
+    }
+   ]
+  },
+  "gpt-6.1-terra": {
+   "aa_name": "GPT-6.1 Terra",
+   "aa_slug": "gpt-6-1-terra",
+   "aa_default": "medium",
+   "top": "max",
+   "tiers": [
+    {
+     "effort": "low",
+     "level": 20,
+     "aa": 29.42
+    },
+    {
+     "effort": "medium",
+     "level": 30,
+     "aa": 38.17
+    },
+    {
+     "effort": "high",
+     "level": 40,
+     "aa": 42.43
+    },
+    {
+     "effort": "xhigh",
+     "level": 50,
+     "aa": 45.25
+    },
+    {
+     "effort": "max",
+     "level": 60,
+     "aa": 51.33
+    }
+   ]
+  },
+  "gpt-6-luna": {
+   "aa_name": "GPT-6 Luna",
+   "aa_slug": "gpt-6-luna",
+   "aa_default": "medium",
+   "top": "max",
+   "tiers": [
+    {
+     "effort": "low",
+     "level": 20,
+     "aa": 9.67
+    },
+    {
+     "effort": "medium",
+     "level": 30,
+     "aa": 18.45
+    },
+    {
+     "effort": "high",
+     "level": 40,
+     "aa": 21.43
+    },
+    {
+     "effort": "xhigh",
+     "level": 50,
+     "aa": 23.45
+    },
+    {
+     "effort": "max",
+     "level": 60,
+     "aa": 27.86
+    }
+   ]
+  },
+  "gemini-3-8-flash": {
+   "aa_name": "Gemini 3.8 Flash",
+   "aa_slug": "gemini-3-8-flash",
+   "aa_default": "medium",
+   "top": "high",
+   "tiers": [
+    {
+     "effort": "low",
+     "level": 20,
+     "aa": 22.55
+    },
+    {
+     "effort": "medium",
+     "level": 30,
+     "aa": 30.08
+    },
+    {
+     "effort": "high",
+     "level": 40,
+     "aa": 30.85
+    }
+   ]
+  },
+  "grok-4.7": {
+   "aa_name": "Grok 4.7",
+   "aa_slug": "grok-4-7",
+   "aa_default": "high",
+   "top": "xhigh",
+   "tiers": [
+    {
+     "effort": "low",
+     "level": 20,
+     "aa": 31.13
+    },
+    {
+     "effort": "high",
+     "level": 40,
+     "aa": 35.21
+    },
+    {
+     "effort": "xhigh",
+     "level": 50,
+     "aa": 35.49
+    }
+   ]
+  },
+  "glm-5.3": {
+   "aa_name": "GLM-5.3",
+   "aa_slug": "glm-5-3",
+   "aa_default": "max",
+   "top": "max",
+   "tiers": [
+    {
+     "effort": "low",
+     "level": 20,
+     "aa": 23.11
+    },
+    {
+     "effort": "max",
+     "level": 60,
+     "aa": 31.65
+    }
+   ]
+  },
+  "deepseek-v4.1-flash": {
+   "aa_name": "DeepSeek V4.1 Flash 1017",
+   "aa_slug": "deepseek-v4-1-flash-1017",
+   "aa_default": "high",
+   "top": "max",
+   "tiers": [
+    {
+     "effort": "high",
+     "level": 40,
+     "aa": 28.64
+    },
+    {
+     "effort": "max",
+     "level": 60,
+     "aa": 32.59
+    }
+   ]
+  },
+  "deepseek-v4-pro": {
+   "aa_name": "DeepSeek V4 Pro 0813",
+   "aa_slug": "deepseek-v4-pro",
+   "aa_default": "high",
+   "top": "max",
+   "tiers": [
+    {
+     "effort": "high",
+     "level": 40,
+     "aa": 20.8
+    },
+    {
+     "effort": "max",
+     "level": 60,
+     "aa": 23.06
+    }
+   ]
+  }
+ }
+}

@@ -32,6 +32,14 @@ import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DB = os.path.join(HERE, "llm_intel.db")
+EFFORT_FILE = os.path.join(HERE, "effort_tiers.json")
+EFFORT = {}
+if os.path.exists(EFFORT_FILE):
+    _e = json.load(open(EFFORT_FILE, encoding="utf-8"))
+    for _mid, _d in _e.get("models", {}).items():
+        _top = _d["tiers"][-1]
+        EFFORT[_mid] = [{"effort": t["effort"], "aa": t["aa"],
+                         "dy": round(t["aa"] - _top["aa"], 2)} for t in _d["tiers"]]
 TPL = os.path.join(HERE, "scatter_tpl.html")
 OUT = os.path.join(HERE, "scatter_20261121.html")
 DATE = "2026-11-21"
@@ -128,6 +136,8 @@ for r in rows:
         "price": r["output_per_m"],
         "mm": bool(r["multimodal_in"]),
         "vendor": VENDOR_CN.get(r["vid"], r["vid"]),
+        "tiers": ([{"effort": t["effort"], "aa": t["aa"], "y": round(r["score"] + t["dy"], 2)}
+                   for t in EFFORT.get(r["mid"], [])] or None),
     })
 
 with open(os.path.join(HERE, "history.json"), encoding="utf-8") as f:
@@ -227,7 +237,8 @@ const curPts = [], histPts = [];
 CURRENT.forEach(p=>{
   curPts.push({ x:PX(p.price), y:p.score, _price:p.price, _free:false, _name:p.name,
     _vendor:p.vendor, _lane:laneOf(p.tier), _rel:relKey(p.rel), _gen:0, _src:"cur",
-    _mm:!!p.mm, _lo:p.lo, _hi:p.hi, _n:p.n, _id:p.id, _rep:!!p.rep, _vis:true });
+    _mm:!!p.mm, _lo:p.lo, _hi:p.hi, _n:p.n, _id:p.id, _rep:!!p.rep,
+    _tiers:p.tiers, _vis:true });
 });
 HIST.forEach(p=>{
   histPts.push({ x:PX(p.price), y:p.ability, _price:p.price, _free:(p.price===0),
@@ -276,6 +287,7 @@ let eloDatasets = null;   // built lazily on first Elo-tab switch
 
 // ---- state (declared BEFORE new Chart: afterDatasetsDraw reads showLabels at first render) ----
 let showLabels = true, repOnly = true, laneFilter = 'all', focusVendor = null;
+let hoverId = null;   // model name whose effort ladder is being shown
 let wheelMode = 'zoom';                 // 'zoom' (default) | 'pan' (trackpad friendly)
 
 const box = document.getElementById('box'), canvas = document.getElementById('c');
@@ -326,6 +338,39 @@ const chart = new Chart(ctx, {
         c.save(); c.beginPath(); c.arc(v.px,v.py,11,0,Math.PI*2);
         c.strokeStyle="rgba(255,212,94,.9)"; c.lineWidth=1.5; c.stroke(); c.restore();
       });
+
+      // ---- reasoning-effort ladder for the hovered model ----
+      if(hoverId){
+        const hd = chart.data.datasets[0].data.find(p=> p._name === hoverId);
+        if(hd && hd._tiers && hd._tiers.length > 1){
+          const px = x.getPixelForValue(hd.x);
+          // the top rung IS the model's own point -> drop it so the point label
+          // and the rung label do not fight for the same spot
+          const lows = hd._tiers.slice(0, -1);
+          const ys = lows.map(t=> y.getPixelForValue(t.y));
+          const topPy = y.getPixelForValue(hd.y);
+          const vis2 = lows.map((t,i)=> ({t, py:ys[i]}))
+                        .filter(o=> o.py >= (chart.chartArea?chart.chartArea.top:0) - 2 &&
+                                    o.py <= (chart.chartArea?chart.chartArea.bottom:chart.height) + 2);
+          c.save();
+          c.setLineDash([3,3]); c.lineWidth = 1;
+          c.strokeStyle = hexA(vcolor(hd._vendor), 0.6);
+          c.beginPath(); c.moveTo(px, Math.min(topPy, ...ys)); c.lineTo(px, Math.max(...ys)); c.stroke();
+          c.setLineDash([]);
+          c.font = "10px -apple-system,Segoe UI,sans-serif";
+          c.textBaseline = "middle";
+          vis2.forEach(o=>{
+            c.beginPath(); c.arc(px, o.py, 4, 0, Math.PI*2);
+            c.fillStyle = hexA(vcolor(hd._vendor), 0.85); c.fill();
+            c.strokeStyle = "#ffffff"; c.lineWidth = 1; c.stroke();
+            const right = px > chart.width - 90;
+            c.textAlign = right ? "right" : "left";
+            c.fillStyle = "#b9bfd4";
+            c.fillText(o.t.effort + " " + o.t.aa.toFixed(0), px + (right?-9:9), o.py);
+          });
+          c.restore();
+        }
+      }
 
       if(!showLabels) return;
 
@@ -606,6 +651,27 @@ window.addEventListener('mousemove', e=>{
   lastX = e.clientX; lastY = e.clientY;
   if(!rafPending){ rafPending = true; requestAnimationFrame(flushPan); }
 });
+
+// ---- hover: reveal the reasoning-effort ladder of the nearest point ----
+canvas.addEventListener('mousemove', ev=>{
+  if(dragging) return;
+  const rect = canvas.getBoundingClientRect();
+  const mx = (ev.clientX - rect.left) * (chart.width / rect.width);
+  const my = (ev.clientY - rect.top)  * (chart.height / rect.height);
+  const xs = chart.scales.x, ys = chart.scales.y;
+  let best = null, bd = 1e9;
+  chart.data.datasets[0].data.forEach(d=>{
+    const px = xs.getPixelForValue(d.x), py = ys.getPixelForValue(d.y);
+    const dd = (px-mx)*(px-mx) + (py-my)*(py-my);
+    if(dd < bd){ bd = dd; best = d; }
+  });
+  const nid = (best && bd <= 400 && best._tiers) ? best._name : null;
+  if(nid !== hoverId){ hoverId = nid; chart.update('none'); }
+});
+canvas.addEventListener('mouseleave', ()=>{
+  if(hoverId){ hoverId = null; chart.update('none'); }
+});
+window.__hoverModel = n=>{ hoverId = n; chart.update('none'); };
 
 document.getElementById('zin').onclick  = ()=> zoomCenter(0.85);
 document.getElementById('zout').onclick = ()=> zoomCenter(1/0.85);

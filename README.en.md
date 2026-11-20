@@ -66,6 +66,15 @@ plan-equivalent = API list price × k        k = monthly fee ÷ monthly API-equi
 
 **This is not evidence that Claude is cheaper than GLM.** The master table therefore keeps two columns (subscription-amortised | API list) with a warning in the header, and the scatter axis stays on API list price to avoid mixing bases.
 
+## Reasoning-effort ladders (on hover)
+
+Hover a point and a dashed vertical line drops from it, marking where the **other reasoning efforts** (low / medium / high / xhigh / max) sit:
+
+- data comes from each model's page on Artificial Analysis, which splits the Intelligence Index by reasoning effort;
+- placement: `tier y = model composite + (AA tier − AA top tier)` — price does not change, so the ladder is vertical, and the top tier *is* the model's own point (not drawn twice);
+- **only models where AA publishes more than one effort get a ladder** (9 of 37 today). Non-reasoning models, and models with a single fixed configuration, have no ladder;
+- this is an **estimated placement**: the AA index and this composite are not the same ruler, so only the *delta between tiers* is translated, never the absolute value.
+
 ## Quick start
 
 ```bash
