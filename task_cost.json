@@ -7,8 +7,8 @@
   "tin": 300000,
   "tout": 90000,
   "scale_k": 3.1495,
-  "n_measured": 25,
-  "n_estimated": 14,
+  "n_measured": 33,
+  "n_estimated": 15,
   "proxy_rule": "an unmeasured model sold at exactly the same input/output price as a measured sibling inherits that sibling's measured per-task cost",
   "median_ratio_before_scale": 0.3175,
   "note": "per-task cost cannot be predicted from list price: measured cost / output price spans ~50x across the measured pool, so `est` rows are a placeholder, not a substitute. They are marked in the chart."
@@ -286,6 +286,69 @@
    "effort": "medium",
    "src": "aa-model-page",
    "est": false
+  },
+  "claude-fable-5-2": {
+   "cny": 64.457,
+   "usd": 9.078414777860381,
+   "effort": "high",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "claude-sonnet-5-5": {
+   "cny": 11.617,
+   "usd": 1.6361294399784785,
+   "effort": "high",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "claude-haiku-5-5": {
+   "cny": 0.652,
+   "usd": 0.0917645584066771,
+   "effort": "medium",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "gemini-4-carbon": {
+   "cny": 46.759,
+   "usd": 6.585776867225546,
+   "effort": "medium",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "gemini-4-argon": {
+   "cny": 30.634,
+   "usd": 4.314621569087732,
+   "effort": "medium",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "gemini-4-hydrogen": {
+   "cny": 13.301,
+   "usd": 1.8733140062520008,
+   "effort": "high",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "muse-wonder": {
+   "cny": 32.38,
+   "usd": 4.560546278670271,
+   "effort": "high",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "muse-ember": {
+   "cny": 0.965,
+   "usd": 0.1359356168986363,
+   "effort": "max",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "claude-mythos-5-2": {
+   "cny": 64.457,
+   "usd": 9.078414777860381,
+   "effort": "high",
+   "src": "proxy:claude-fable-5-2",
+   "est": true
   }
  }
 }

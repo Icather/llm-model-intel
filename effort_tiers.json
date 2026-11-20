@@ -6,7 +6,7 @@
   "placement": "tier y = composite + (aa_tier - aa_anchor);  tier x = price * xmul",
   "xmul": "cost per intelligence-index task at that tier / same at anchor (AA intelligenceIndexCostPerTask.cost.total; fallback: output tokens per task)",
   "note": "delta-only translation: the AA index and this composite are not the same ruler, so only tier-to-tier differences are mapped, never absolute values.",
-  "mapped": 11,
+  "mapped": 19,
   "dropped_tiers": {
    "gemini-3-8-flash": [
     "low"
@@ -509,6 +509,350 @@
      "out_tok": 40360,
      "cost_per_task": 1.0144,
      "anchor": false
+    }
+   ]
+  },
+  "claude-fable-5-2": {
+   "aa_name": "Claude Fable 5.2",
+   "aa_slug": "claude-fable-5-2",
+   "aa_default": "high",
+   "anchor": "high",
+   "tiers": [
+    {
+     "effort": "low",
+     "level": 20,
+     "aa": 53.92,
+     "dy": -7.9,
+     "xmul": 0.341,
+     "out_tok": 35860,
+     "cost_per_task": 3.0972,
+     "anchor": false
+    },
+    {
+     "effort": "medium",
+     "level": 30,
+     "aa": 56.41,
+     "dy": -5.41,
+     "xmul": 0.419,
+     "out_tok": 43130,
+     "cost_per_task": 3.8026,
+     "anchor": false
+    },
+    {
+     "effort": "high",
+     "level": 40,
+     "aa": 61.82,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": 97841,
+     "cost_per_task": 9.0784,
+     "anchor": true
+    },
+    {
+     "effort": "xhigh",
+     "level": 50,
+     "aa": 62.22,
+     "dy": 0.4,
+     "xmul": 1.633,
+     "out_tok": 161944,
+     "cost_per_task": 14.8286,
+     "anchor": false
+    },
+    {
+     "effort": "max",
+     "level": 60,
+     "aa": 64.56,
+     "dy": 2.74,
+     "xmul": 2.923,
+     "out_tok": 273775,
+     "cost_per_task": 26.5386,
+     "anchor": false
+    }
+   ]
+  },
+  "claude-sonnet-5-5": {
+   "aa_name": "Claude Sonnet 5.5",
+   "aa_slug": "claude-sonnet-5-5",
+   "aa_default": "high",
+   "anchor": "high",
+   "tiers": [
+    {
+     "effort": "low",
+     "level": 20,
+     "aa": 25.65,
+     "dy": -15.87,
+     "xmul": 0.313,
+     "out_tok": 20856,
+     "cost_per_task": 0.5113,
+     "anchor": false
+    },
+    {
+     "effort": "medium",
+     "level": 30,
+     "aa": 30.82,
+     "dy": -10.7,
+     "xmul": 0.477,
+     "out_tok": 30745,
+     "cost_per_task": 0.7807,
+     "anchor": false
+    },
+    {
+     "effort": "high",
+     "level": 40,
+     "aa": 41.52,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": 58421,
+     "cost_per_task": 1.6361,
+     "anchor": true
+    },
+    {
+     "effort": "xhigh",
+     "level": 50,
+     "aa": 49.92,
+     "dy": 8.4,
+     "xmul": 2.501,
+     "out_tok": 122204,
+     "cost_per_task": 4.092,
+     "anchor": false
+    },
+    {
+     "effort": "max",
+     "level": 60,
+     "aa": 54.54,
+     "dy": 13.02,
+     "xmul": 6.125,
+     "out_tok": 285387,
+     "cost_per_task": 10.0206,
+     "anchor": false
+    }
+   ]
+  },
+  "claude-haiku-5-5": {
+   "aa_name": "Claude Haiku 5.5",
+   "aa_slug": "claude-haiku-5-5",
+   "aa_default": "medium",
+   "anchor": "medium",
+   "tiers": [
+    {
+     "effort": "low",
+     "level": 20,
+     "aa": 18.62,
+     "dy": -5.98,
+     "xmul": 0.477,
+     "out_tok": 28160,
+     "cost_per_task": 0.0438,
+     "anchor": false
+    },
+    {
+     "effort": "medium",
+     "level": 30,
+     "aa": 24.6,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": 53335,
+     "cost_per_task": 0.0918,
+     "anchor": true
+    },
+    {
+     "effort": "high",
+     "level": 40,
+     "aa": 29.87,
+     "dy": 5.27,
+     "xmul": 1.728,
+     "out_tok": 88064,
+     "cost_per_task": 0.1586,
+     "anchor": false
+    },
+    {
+     "effort": "xhigh",
+     "level": 50,
+     "aa": 34.64,
+     "dy": 10.04,
+     "xmul": 2.707,
+     "out_tok": 136176,
+     "cost_per_task": 0.2484,
+     "anchor": false
+    },
+    {
+     "effort": "max",
+     "level": 60,
+     "aa": 36.48,
+     "dy": 11.88,
+     "xmul": 4.479,
+     "out_tok": 225965,
+     "cost_per_task": 0.411,
+     "anchor": false
+    }
+   ]
+  },
+  "gemini-4-carbon": {
+   "aa_name": "Gemini 4 Carbon",
+   "aa_slug": "gemini-4-carbon",
+   "aa_default": "medium",
+   "anchor": "medium",
+   "tiers": [
+    {
+     "effort": "low",
+     "level": 20,
+     "aa": 54.22,
+     "dy": -4.04,
+     "xmul": 1.091,
+     "out_tok": 86165,
+     "cost_per_task": 7.1866,
+     "anchor": false
+    },
+    {
+     "effort": "medium",
+     "level": 30,
+     "aa": 58.26,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": 103012,
+     "cost_per_task": 6.5858,
+     "anchor": true
+    },
+    {
+     "effort": "high",
+     "level": 40,
+     "aa": 60.03,
+     "dy": 1.77,
+     "xmul": 1.178,
+     "out_tok": 122767,
+     "cost_per_task": 7.7555,
+     "anchor": false
+    }
+   ]
+  },
+  "gemini-4-argon": {
+   "aa_name": "Gemini 4 Argon",
+   "aa_slug": "gemini-4-argon",
+   "aa_default": "medium",
+   "anchor": "medium",
+   "tiers": [
+    {
+     "effort": "medium",
+     "level": 30,
+     "aa": 47.6,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": 100407,
+     "cost_per_task": 4.3146,
+     "anchor": true
+    },
+    {
+     "effort": "high",
+     "level": 40,
+     "aa": 50.41,
+     "dy": 2.81,
+     "xmul": 1.153,
+     "out_tok": 116368,
+     "cost_per_task": 4.9733,
+     "anchor": false
+    }
+   ]
+  },
+  "gemini-4-hydrogen": {
+   "aa_name": "Gemini 4 Hydrogen",
+   "aa_slug": "gemini-4-hydrogen",
+   "aa_default": "high",
+   "anchor": "high",
+   "tiers": [
+    {
+     "effort": "low",
+     "level": 20,
+     "aa": 26.89,
+     "dy": -23.9,
+     "xmul": 0.156,
+     "out_tok": 14073,
+     "cost_per_task": 0.2922,
+     "anchor": false
+    },
+    {
+     "effort": "medium",
+     "level": 30,
+     "aa": 41.23,
+     "dy": -9.56,
+     "xmul": 0.426,
+     "out_tok": 39352,
+     "cost_per_task": 0.798,
+     "anchor": false
+    },
+    {
+     "effort": "high",
+     "level": 40,
+     "aa": 50.79,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": 84978,
+     "cost_per_task": 1.8733,
+     "anchor": true
+    },
+    {
+     "effort": "xhigh",
+     "level": 50,
+     "aa": 53.92,
+     "dy": 3.13,
+     "xmul": 1.687,
+     "out_tok": 154405,
+     "cost_per_task": 3.1602,
+     "anchor": false
+    }
+   ]
+  },
+  "muse-wonder": {
+   "aa_name": "Muse Wonder",
+   "aa_slug": "muse-wonder",
+   "aa_default": "high",
+   "anchor": "high",
+   "tiers": [
+    {
+     "effort": "high",
+     "level": 40,
+     "aa": 40.53,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": 67926,
+     "cost_per_task": 4.5605,
+     "anchor": true
+    },
+    {
+     "effort": "max",
+     "level": 60,
+     "aa": 43.57,
+     "dy": 3.04,
+     "xmul": 1.524,
+     "out_tok": 96063,
+     "cost_per_task": 6.952,
+     "anchor": false
+    }
+   ]
+  },
+  "muse-ember": {
+   "aa_name": "Muse Ember",
+   "aa_slug": "muse-ember",
+   "aa_default": "max",
+   "anchor": "max",
+   "tiers": [
+    {
+     "effort": "xhigh",
+     "level": 50,
+     "aa": 34.11,
+     "dy": -1.91,
+     "xmul": 0.855,
+     "out_tok": 72364,
+     "cost_per_task": 0.1162,
+     "anchor": false
+    },
+    {
+     "effort": "max",
+     "level": 60,
+     "aa": 36.02,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": 84481,
+     "cost_per_task": 0.1359,
+     "anchor": true
     }
    ]
   }

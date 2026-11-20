@@ -128,11 +128,12 @@ con.close()
 # OpenAI is the documented exception: all four of its lines (Astra / Sol / Terra /
 # Luna) stay visible by default, per user instruction.
 REPRESENTATIVE = {
-    "anthropic": ["claude-opus-5-5", "claude-fable-5-1"],
+    "anthropic": ["claude-opus-5-5", "claude-fable-5-2", "claude-mythos-5-2",
+                  "claude-sonnet-5-5", "claude-haiku-5-5"],
     "openai": ["gpt-6.2-astra", "gpt-6.2-sol", "gpt-6.1-terra", "gpt-6-luna"],
-    "google": ["gemini-3-pro", "gemini-3-8-flash"],
+    "google": ["gemini-4-carbon", "gemini-4-hydrogen"],
     "xai": ["grok-4.7"],
-    "meta": ["muse-spark-1-3"],
+    "meta": ["muse-wonder", "muse-spark-1-3"],
     "zhipu": ["glm-5.3", "glm-5.3-flash"],
     "alibaba": ["qwen4-max", "qwen3.8-max", "qwen3.8-flash-next", "qwen3.8-27b"],
     "tencent": ["hy4-flash", "hy3"],
