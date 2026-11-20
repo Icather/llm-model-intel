@@ -166,14 +166,14 @@
       <span class="k">≈</span>名字带 ≈ ＝ 单任务成本为<b>估算</b>（AA 未实测该模型）
       <span class="mk line"></span>悬停某点 → 思考档位阶梯：右上＝更强更贵，左下＝更弱更省（标签为 AA 指数 · 成本倍数）
       <br>
-      <span class="k">颜色 = 厂商</span>，与下方按钮一致；点击厂商名可<b>隐藏/显示</b>该厂商（默认全显示），最右「全部」一键复位。历史代能力分与单任务成本均为<b>估算</b>；当前代单任务成本有 23 个厂商实测、14 个推算（含 4 个同价同门代理），估算值在心部留空心标记。
+      <span class="k">颜色 = 厂商</span>，与下方按钮一致；点击厂商名可<b>隐藏/显示</b>该厂商（默认只开 OpenAI / Kimi / DeepSeek / 阿里 / 智谱），最右「全部」一键复位。历史代能力分与单任务成本均为<b>估算</b>；当前代单任务成本有 23 个厂商实测、14 个推算（含 4 个同价同门代理），估算值在心部留空心标记。
     </div>
 
     <div class="insight" id="insight"></div>
     <div class="insight" id="elo-note" style="display:none; border-left-color:#d8a94e;">
       <b>Elo 轴说明</b>：纵轴为 Chatbot Arena 用户盲测偏好分（openlm.ai 快照，600万+投票），
       新旧模型在<b>同一池</b>里被投票——这是目前唯一可严格跨代比较的恒定基准。
-      仅显示有 Elo 数据的模型（部分当代模型暂缺）；Elo 偏好「日常聊天手感」，与硬基准（基准加权轴）结论可能有出入，两轴对照阅读。
+      仅显示有 Elo 数据的模型（部分当代模型暂缺）；Elo 偏好「日常聊天手感」，与硬基准（基准加权轴）结论可能有出入，两轴对照阅读。<span id="elo-hidden"></span>
     </div>
 
     <details>
@@ -291,6 +291,7 @@ let eloDatasets = null;   // built lazily on first Elo-tab switch
 let showLabels = true, repOnly = true, laneFilter = 'all';
 // vendor chips are VISIBILITY toggles (all on by default), not a single-vendor focus
 const hiddenVendors = new Set();
+const DEFAULT_VENDORS = ["OpenAI", "Kimi", "DeepSeek", "阿里", "智谱"];
 let hoverId = null;   // model name whose effort ladder is being shown
 let wheelMode = 'zoom';                 // 'zoom' (default) | 'pan' (trackpad friendly)
 
@@ -531,7 +532,37 @@ function applyFilters(){
   }
   setPts(arr[0], cDs.filter(p=>p._vis), true);
   [1,2,3,4].forEach((_,i)=> setPts(arr[i+1], hDs.filter(p=> p._gen===(i+1) && p._vis), false));
+  updateInsight();
   chart.update('none');
+}
+
+// The default view is a 5-vendor subset now, so a hard-coded "strongest model" line
+// would name a model that is not on screen. Recompute it from what is actually drawn.
+function updateInsight(){
+  const el = document.getElementById('insight');
+  if(!el) return;
+  const pool = (TAB === 'elo') ? curEloPts : curPts;
+  const vis = pool.filter(p=>p._vis);
+  const vend = new Set(vis.map(p=>p._vendor));
+  if(!vis.length){
+    el.innerHTML = '\u26a0\ufe0f 当前没有显示任何模型 —— 检查「显示厂商」「代表性模型」「泳道」三个筛选，或点「显示厂商」里的「全部」。';
+    return;
+  }
+  const best = vis.reduce((a,b)=> b.y > a.y ? b : a);
+  const metric = (TAB === 'elo') ? 'Elo ' : '能力 ';
+  // Elo only exists for 4 current models; with the 5-vendor default two of them are
+  // hidden, so say which ones instead of leaving a 2-point chart looking broken.
+  const eloEl = document.getElementById('elo-hidden');
+  if(eloEl){
+    const hid = curEloPts.filter(q=> !q._vis).map(q=> q._name);
+    eloEl.innerHTML = hid.length
+      ? ' 另有 ' + hid.length + ' 个有 Elo 的模型（' + hid.join('、') + '）被「显示厂商」关掉了。'
+      : '';
+  }
+  el.innerHTML = '当前显示 <b>' + vis.length + '</b> / ' + pool.length +
+    ' 个当前代模型，覆盖 <b>' + vend.size + '</b> 家厂商；其中最强：<b>' + best._name + '</b>（' +
+    metric + best.y.toFixed(1) + '，单任务 ' + (best._est ? '\u2248' : '') +
+    '\u00a5' + best._cost.toFixed(2) + '）。点「显示厂商」可增删厂商。';
 }
 
 // ---- tab switching ----
@@ -788,7 +819,9 @@ document.getElementById('btn-label').onclick=()=>{
 const vendors=[...new Set([...curPts,...histPts].map(p=>p._vendor))];
 const chipBox=document.getElementById('chips');
 vendors.forEach(v=>{
-  const c=document.createElement('span'); c.className='chip on';
+  const on = DEFAULT_VENDORS.indexOf(v) >= 0;
+  if(!on) hiddenVendors.add(v);
+  const c=document.createElement('span'); c.className = 'chip' + (on ? ' on' : '');
   c.title = '点击隐藏 / 显示该厂商';
   c.innerHTML='<i style="background:'+vcolor(v)+'"></i>'+v;
   c.onclick=()=>{
@@ -816,7 +849,7 @@ document.getElementById('m1').textContent = META.methodology;
 document.getElementById('m2').textContent = META.price_note;
 document.getElementById('m3').textContent = META.conf_legend + ' ｜ ' + META.gen_legend;
 document.getElementById('m4').textContent = META.lane_note + ' ｜ 注意：' + META.caveat;
-document.getElementById('insight').innerHTML = "默认视图＝每个厂商的<b>代表性模型</b>（每条产品线取最新一代，OpenAI 的 Astra / Sol / Terra / Luna 四条线全保留）：<b>27</b> 个。点「代表性模型」按钮可展开全部 <b>37</b> 个在库模型。最强：<b>Claude Opus 5.5</b>（能力 67.3 分，单任务 ¥17.40）。历史代（空心点）默认隐藏，可在下面按代叠加——历史代能力分与单任务成本均为<b>估算</b>值。";
+document.getElementById('insight').innerHTML = "默认视图＝<b>OpenAI / Kimi / DeepSeek / 阿里 / 智谱</b> 的代表性模型（每条产品线取最新一代，OpenAI 的 Astra / Sol / Terra / Luna 四条线全保留）：<b>13</b> 个。点「代表性模型」按钮可展开全部 <b>37</b> 个在库模型，其余 9 家厂商在「显示厂商」里一键打开。其中最强：<b>GPT-6 Astra</b>（能力 61.1 分，单任务 ¥19.40）。历史代（空心点）默认隐藏，可在下面按代叠加——历史代能力分与单任务成本均为<b>估算</b>值。";
 
 applyFilters();
 fitView();   // default view: visible data fills the plot on both axes

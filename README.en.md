@@ -12,7 +12,7 @@
 
 ![ability vs price](docs/preview.png)
 
-<sub>The scatter is a single self-contained HTML file (Chart.js inlined) — open it offline. Shown above: the default view, one representative model per product line.</sub>
+<sub>The scatter is a single self-contained HTML file (Chart.js inlined) — open it offline. Shown above: the default view — representative models from 5 vendors (OpenAI / Kimi / DeepSeek / Alibaba / Zhipu), 13 points. Everything else is one click away under 显示厂商.</sub>
 
 ---
 

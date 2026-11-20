@@ -204,13 +204,17 @@ for p in current:
         cur_elo_pts.append({**p, "elo": CUR_ELO[p["name"]]})
 hist_elo_pts = [p for p in hist if p.get("elo")]
 
-top = current[0]
+# Vendors shown by default (user instruction 2026-11-21): the chart opens on this
+# subset of the representative view; the rest are one click away in 显示厂商.
+DEFAULT_VENDORS = ["OpenAI", "Kimi", "DeepSeek", "\u963f\u91cc", "\u667a\u8c31"]
+_def_cur = [p for p in current if p["id"] in REP_IDS and p["vendor"] in DEFAULT_VENDORS]
+top = max(_def_cur, key=lambda p: p["score"]) if _def_cur else current[0]
 insight = (
-    "默认视图＝每个厂商的<b>代表性模型</b>（每条产品线取最新一代，OpenAI 的 Astra / Sol / Terra / "
-    "Luna 四条线全保留）：<b>%d</b> 个。点「代表性模型」按钮可展开全部 <b>%d</b> 个在库模型。"
-    "最强：<b>%s</b>（能力 %.1f 分，单任务 ¥%.2f）。历史代（空心点）默认隐藏，可在下面按代叠加——"
-    "历史代能力分与单任务成本均为<b>估算</b>值。"
-) % (sum(1 for p in current if p["id"] in REP_IDS), len(current),
+    "默认视图＝<b>%s</b> 的代表性模型（每条产品线取最新一代，OpenAI 的 Astra / Sol / Terra / "
+    "Luna 四条线全保留）：<b>%d</b> 个。点「代表性模型」按钮可展开全部 <b>%d</b> 个在库模型，"
+    "其余 9 家厂商在「显示厂商」里一键打开。其中最强：<b>%s</b>（能力 %.1f 分，单任务 ¥%.2f）。"
+    "历史代（空心点）默认隐藏，可在下面按代叠加——历史代能力分与单任务成本均为<b>估算</b>值。"
+) % (" / ".join(DEFAULT_VENDORS), len(_def_cur), len(current),
      top["name"], top["score"], top["cost"])
 
 CURRENT_JS = json.dumps(current, ensure_ascii=False)
@@ -322,6 +326,7 @@ let eloDatasets = null;   // built lazily on first Elo-tab switch
 let showLabels = true, repOnly = true, laneFilter = 'all';
 // vendor chips are VISIBILITY toggles (all on by default), not a single-vendor focus
 const hiddenVendors = new Set();
+const DEFAULT_VENDORS = __DEFAULT_VENDORS__;
 let hoverId = null;   // model name whose effort ladder is being shown
 let wheelMode = 'zoom';                 // 'zoom' (default) | 'pan' (trackpad friendly)
 
@@ -562,7 +567,37 @@ function applyFilters(){
   }
   setPts(arr[0], cDs.filter(p=>p._vis), true);
   [1,2,3,4].forEach((_,i)=> setPts(arr[i+1], hDs.filter(p=> p._gen===(i+1) && p._vis), false));
+  updateInsight();
   chart.update('none');
+}
+
+// The default view is a 5-vendor subset now, so a hard-coded "strongest model" line
+// would name a model that is not on screen. Recompute it from what is actually drawn.
+function updateInsight(){
+  const el = document.getElementById('insight');
+  if(!el) return;
+  const pool = (TAB === 'elo') ? curEloPts : curPts;
+  const vis = pool.filter(p=>p._vis);
+  const vend = new Set(vis.map(p=>p._vendor));
+  if(!vis.length){
+    el.innerHTML = '\u26a0\ufe0f 当前没有显示任何模型 —— 检查「显示厂商」「代表性模型」「泳道」三个筛选，或点「显示厂商」里的「全部」。';
+    return;
+  }
+  const best = vis.reduce((a,b)=> b.y > a.y ? b : a);
+  const metric = (TAB === 'elo') ? 'Elo ' : '能力 ';
+  // Elo only exists for 4 current models; with the 5-vendor default two of them are
+  // hidden, so say which ones instead of leaving a 2-point chart looking broken.
+  const eloEl = document.getElementById('elo-hidden');
+  if(eloEl){
+    const hid = curEloPts.filter(q=> !q._vis).map(q=> q._name);
+    eloEl.innerHTML = hid.length
+      ? ' 另有 ' + hid.length + ' 个有 Elo 的模型（' + hid.join('、') + '）被「显示厂商」关掉了。'
+      : '';
+  }
+  el.innerHTML = '当前显示 <b>' + vis.length + '</b> / ' + pool.length +
+    ' 个当前代模型，覆盖 <b>' + vend.size + '</b> 家厂商；其中最强：<b>' + best._name + '</b>（' +
+    metric + best.y.toFixed(1) + '，单任务 ' + (best._est ? '\u2248' : '') +
+    '\u00a5' + best._cost.toFixed(2) + '）。点「显示厂商」可增删厂商。';
 }
 
 // ---- tab switching ----
@@ -819,7 +854,9 @@ document.getElementById('btn-label').onclick=()=>{
 const vendors=[...new Set([...curPts,...histPts].map(p=>p._vendor))];
 const chipBox=document.getElementById('chips');
 vendors.forEach(v=>{
-  const c=document.createElement('span'); c.className='chip on';
+  const on = DEFAULT_VENDORS.indexOf(v) >= 0;
+  if(!on) hiddenVendors.add(v);
+  const c=document.createElement('span'); c.className = 'chip' + (on ? ' on' : '');
   c.title = '点击隐藏 / 显示该厂商';
   c.innerHTML='<i style="background:'+vcolor(v)+'"></i>'+v;
   c.onclick=()=>{
@@ -857,6 +894,7 @@ window.__panBy = panBy; window.__zoomAt = zoomAt; window.__resetView = resetView
 '''
 
 JS = JS.replace("__INSIGHT__", INSIGHT_JS)
+JS = JS.replace("__DEFAULT_VENDORS__", json.dumps(DEFAULT_VENDORS, ensure_ascii=False))
 
 # ---- render the unrated lane as a static HTML block ----
 if unrated:
