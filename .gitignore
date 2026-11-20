@@ -1,0 +1,66 @@
+# ---------- build artefacts (rebuild: `llm_intel.py init && seed`) ----------
+llm_intel.db
+*.db
+*.db-journal
+*.db-wal
+
+# ---------- dated backups ----------
+*.bak_*
+*.bak-*
+baseline_*_backup.json
+
+# ---------- raw fetch dumps / intermediate parses ----------
+_ls_parsed_*.json
+_ls_map_*.json
+_ls_try*.html
+_ls_try_*.html
+chart_YYYYMMDD.json
+chart_2026*.json
+
+# ---------- local run output ----------
+_gen_out_*.txt
+_gen_scatter_out_*.txt
+_aud_*.txt
+_snap_*.json
+_shot*.png
+_preview*/
+_preview2*/
+
+# ---------- one-off working scripts (kept locally, not part of the pipeline) ----------
+update_2026*.py
+patch_gen_2026*.py
+patch_scatter_2026*.py
+_patch_*.py
+_price_cmp_*.py
+fix_*.py
+fix_prose*.py
+maint_*.py
+_state_*.py
+_write_mem_*.py
+_validate_2026*.py
+_build_ls_*.py
+_cmp_ls_*.py
+_diff_*.py
+_dump_*.py
+_inspect_*.py
+bili_search_tmp.py
+bilibili_community_brief_*.md
+_h4.js
+_harness2.js
+
+# ---------- deliverables: only the newest pair is tracked ----------
+master_table_2026*.md
+!master_table_20261121.md
+scatter_2026*.html
+!scatter_20261121.html
+
+# ---------- OS / editor ----------
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+
+# ---------- superseded one-off patches ----------
+patch*.py
+update_bilibili_*.py
+update_intel_20260831.py
