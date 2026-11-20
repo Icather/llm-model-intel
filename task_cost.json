@@ -1,0 +1,277 @@
+{
+ "_meta": {
+  "metric": "cost of completing one Artificial Analysis Intelligence Index task",
+  "measured": "AA intelligenceIndexCostPerTask.cost.total at the vendor default effort",
+  "estimated": "TIN*p_in + TOUT*p_out where TIN=300000, TOUT=90000, scaled by 3.1495 so the median estimate/measured ratio over measured models is 1.0",
+  "usd_cny": 7.1,
+  "tin": 300000,
+  "tout": 90000,
+  "scale_k": 3.1495,
+  "n_measured": 23,
+  "n_estimated": 14,
+  "proxy_rule": "an unmeasured model sold at exactly the same input/output price as a measured sibling inherits that sibling's measured per-task cost",
+  "median_ratio_before_scale": 0.3175,
+  "note": "per-task cost cannot be predicted from list price: measured cost / output price spans ~50x across the measured pool, so `est` rows are a placeholder, not a substitute. They are marked in the chart."
+ },
+ "models": {
+  "claude-opus-5-5": {
+   "cny": 17.403,
+   "usd": 2.4511,
+   "effort": "medium",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "gpt-6-astra": {
+   "cny": 19.4,
+   "usd": 2.7324,
+   "effort": "medium",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "kimi-k3.1-pro": {
+   "cny": 26.137,
+   "usd": 3.6812002895742055,
+   "effort": "max",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "claude-opus-5": {
+   "cny": 83.933,
+   "usd": 11.821495652976125,
+   "effort": "max",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "gpt-5.6-sol": {
+   "cny": 67.085,
+   "usd": 9.4486,
+   "effort": null,
+   "src": "estimated",
+   "est": true
+  },
+  "claude-fable-5": {
+   "cny": 53.534,
+   "usd": 7.539956160226559,
+   "effort": "high",
+   "src": "proxy:claude-fable-5-1",
+   "est": true
+  },
+  "ernie-5.5-flash": {
+   "cny": 4.157,
+   "usd": 0.5855,
+   "effort": null,
+   "src": "estimated",
+   "est": true
+  },
+  "muse-spark-1-3": {
+   "cny": 16.939,
+   "usd": 2.3857813858107244,
+   "effort": "max",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "deepseek-v4.1-flash": {
+   "cny": 3.239,
+   "usd": 0.4562,
+   "effort": "high",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "claude-fable-5-1": {
+   "cny": 53.534,
+   "usd": 7.539956160226559,
+   "effort": "high",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "qwen4-max": {
+   "cny": 23.204,
+   "usd": 3.2681327300897323,
+   "effort": "xhigh",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "qwen3.8-max": {
+   "cny": 71.17,
+   "usd": 10.023891571541945,
+   "effort": "xhigh",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "kimi-k3": {
+   "cny": 16.818,
+   "usd": 2.368773852349091,
+   "effort": "low",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "glm-5.3": {
+   "cny": 35.566,
+   "usd": 5.0093,
+   "effort": "max",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "hy4-preview": {
+   "cny": 10.771,
+   "usd": 1.5171,
+   "effort": null,
+   "src": "estimated",
+   "est": true
+  },
+  "mimo-v2.6-pro": {
+   "cny": 1.826,
+   "usd": 0.2572,
+   "effort": "max",
+   "src": "aa-leaderboard",
+   "est": false
+  },
+  "gpt-6.1-terra": {
+   "cny": 1.198,
+   "usd": 0.1688,
+   "effort": "medium",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "minimax-m3.1-flash": {
+   "cny": 3.486,
+   "usd": 0.49097067348453205,
+   "effort": "max",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "glm-5.3-flash": {
+   "cny": 4.142,
+   "usd": 0.5833103440014082,
+   "effort": "max",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "deepseek-v4-pro": {
+   "cny": 6.024,
+   "usd": 0.8485,
+   "effort": "high",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "gemini-3-8-flash": {
+   "cny": 44.436,
+   "usd": 6.2586,
+   "effort": "medium",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "grok-4.6": {
+   "cny": 43.904,
+   "usd": 6.1836,
+   "effort": "high",
+   "src": "proxy:grok-4.7",
+   "est": true
+  },
+  "qwen3.8-flash-next": {
+   "cny": 4.043,
+   "usd": 0.5694,
+   "effort": "medium",
+   "src": "aa-leaderboard",
+   "est": false
+  },
+  "doubao-2.1-pro": {
+   "cny": 15.59,
+   "usd": 2.1958,
+   "effort": null,
+   "src": "estimated",
+   "est": true
+  },
+  "gemini-3.7-flash": {
+   "cny": 12.579,
+   "usd": 1.7716,
+   "effort": null,
+   "src": "estimated",
+   "est": true
+  },
+  "gpt-6-sol": {
+   "cny": 17.507,
+   "usd": 2.465800491412395,
+   "effort": "max",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "gemini-3-pro": {
+   "cny": 37.568,
+   "usd": 5.2912,
+   "effort": null,
+   "src": "estimated",
+   "est": true
+  },
+  "grok-4.7": {
+   "cny": 43.904,
+   "usd": 6.1836,
+   "effort": "high",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "minimax-m3": {
+   "cny": 9.124,
+   "usd": 1.2851,
+   "effort": "max",
+   "src": "aa-leaderboard",
+   "est": false
+  },
+  "ernie-5.1": {
+   "cny": 8.882,
+   "usd": 1.2509,
+   "effort": null,
+   "src": "estimated",
+   "est": true
+  },
+  "qwen3.8-27b": {
+   "cny": 25.059,
+   "usd": 3.5295,
+   "effort": "xhigh",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "deepseek-v4-flash": {
+   "cny": 3.239,
+   "usd": 0.4562,
+   "effort": "high",
+   "src": "proxy:deepseek-v4.1-flash",
+   "est": true
+  },
+  "deepseek-v4-flash-vision-exp": {
+   "cny": 3.239,
+   "usd": 0.4562,
+   "effort": "high",
+   "src": "proxy:deepseek-v4.1-flash",
+   "est": true
+  },
+  "mimo-v2.5-pro": {
+   "cny": 1.826,
+   "usd": 0.2572,
+   "effort": "max",
+   "src": "proxy:mimo-v2.6-pro",
+   "est": true
+  },
+  "hy3": {
+   "cny": 2.079,
+   "usd": 0.2928,
+   "effort": null,
+   "src": "estimated",
+   "est": true
+  },
+  "gpt-6-luna": {
+   "cny": 0.3,
+   "usd": 0.0422,
+   "effort": "medium",
+   "src": "aa-model-page",
+   "est": false
+  },
+  "hy4-flash": {
+   "cny": 1.039,
+   "usd": 0.1464,
+   "effort": null,
+   "src": "estimated",
+   "est": true
+  }
+ }
+}

@@ -45,6 +45,25 @@ if os.path.exists(EFFORT_FILE):
                                    "xmul": t.get("xmul", 1.0),
                                    "anchor": bool(t.get("anchor"))}
                                   for t in _d["tiers"]]}
+# Cost of ONE Artificial Analysis index task (2026-11-21: x axis switched from
+# "list price per Mtok" to this). task_cost.json carries the measured AA value for
+# the models AA benchmarks and a flagged placeholder for the rest.
+TASK_FILE = os.path.join(HERE, "task_cost.json")
+TASK, TASK_META = {}, {}
+if os.path.exists(TASK_FILE):
+    _tc = json.load(open(TASK_FILE, encoding="utf-8"))
+    TASK, TASK_META = _tc.get("models", {}), _tc.get("_meta", {})
+_TIN = TASK_META.get("tin", 300000)
+_TOUT = TASK_META.get("tout", 90000)
+_K = TASK_META.get("scale_k", 1.0)
+
+def hist_task_cost(price_cny):
+    """History rows only carry an output price (CNY). Same placeholder profile as
+    task_cost.json, with input price assumed at the pool median p_in/p_out = 0.25."""
+    if not price_cny:
+        return None
+    return (_TIN * (price_cny * 0.25) + _TOUT * price_cny) / 1e6 * _K
+
 TPL = os.path.join(HERE, "scatter_tpl.html")
 OUT = os.path.join(HERE, "scatter_20261121.html")
 DATE = "2026-11-21"
@@ -139,6 +158,8 @@ for r in rows:
         "hi": r["ci_high"],
         "n": r["n_sources"],
         "price": r["output_per_m"],
+        "cost": (TASK.get(r["mid"]) or {}).get("cny"),
+        "est": bool((TASK.get(r["mid"]) or {}).get("est", True)),
         "mm": bool(r["multimodal_in"]),
         "vendor": VENDOR_CN.get(r["vid"], r["vid"]),
         "tiers": ([{"effort": t["effort"], "aa": t["aa"], "dy": t["dy"],
@@ -153,7 +174,10 @@ with open(os.path.join(HERE, "history.json"), encoding="utf-8") as f:
 # all vendors). The subscription-amortised price for overseas models lives in the
 # master table's dedicated column -- say so here instead of silently re-basing x.
 hist_doc["meta"]["price_note"] = (
-    "价格口径=API 挂牌输出价(¥/百万 token，按量标准价)。境内取厂商官方价目；境外取美元挂牌价按 7.1 折算。"
+    "横轴=单任务成本(¥/次)：完成一次 Artificial Analysis Intelligence Index 任务的实际花费，"
+    "取 AA intelligenceIndexCostPerTask（USD）×7.1。23 个模型为 AA 实测，14 个为推算（名字前带 ≈）。"
+    "历史代无当年实测，按同一 token 画像从其输出价推算。"
+    "挂牌价（¥/百万 token）仍在 tooltip 里给出，口径=API 按量标准价，境外美元按 7.1 折算。"
     "促销价/优惠价不入图。"
     "⚠️ 2026-11-21 起，境外模型在总表中另有一列「订阅折算价」= 挂牌价 × k（"
     "Anthropic Max 20x k≈2.5%、OpenAI Pro 200 k≈6.3%、Google Ultra 20x k≈5.8%，即满额度下的边际成本），"
@@ -166,6 +190,7 @@ for m in hist_doc["models"]:
         "name": m["name"], "vendor": m["vendor"], "rel": m["rel"], "gen": m["gen"],
         "tier": m["tier"], "price": m["price"], "mm": bool(m["mm"]),
         "ability": m["ability"], "conf": m["conf"], "note": m.get("note", ""),
+        "cost": hist_task_cost(m["price"]),
         "elo": m.get("elo"),
     })
 
@@ -183,10 +208,10 @@ top = current[0]
 insight = (
     "默认视图＝每个厂商的<b>代表性模型</b>（每条产品线取最新一代，OpenAI 的 Astra / Sol / Terra / "
     "Luna 四条线全保留）：<b>%d</b> 个。点「代表性模型」按钮可展开全部 <b>%d</b> 个在库模型。"
-    "最强：<b>%s</b>（能力 %.1f 分，¥%.1f/M）。历史代（空心点）默认隐藏，可在下面按代叠加——"
-    "历史代能力分为<b>估算</b>值。"
+    "最强：<b>%s</b>（能力 %.1f 分，单任务 ¥%.2f）。历史代（空心点）默认隐藏，可在下面按代叠加——"
+    "历史代能力分与单任务成本均为<b>估算</b>值。"
 ) % (sum(1 for p in current if p["id"] in REP_IDS), len(current),
-     top["name"], top["score"], top["price"])
+     top["name"], top["score"], top["cost"])
 
 CURRENT_JS = json.dumps(current, ensure_ascii=False)
 HIST_JS = json.dumps(hist, ensure_ascii=False)
@@ -241,26 +266,28 @@ const relKey = r => (r||"").slice(0,7);
 //              ladder for ALL generations -> clean cross-gen comparison.
 const curPts = [], histPts = [];
 CURRENT.forEach(p=>{
-  curPts.push({ x:PX(p.price), y:p.score, _price:p.price, _free:false, _name:p.name,
+  curPts.push({ x:PX(p.cost), y:p.score, _price:p.price, _cost:p.cost, _est:p.est,
+    _free:false, _name:p.name,
     _vendor:p.vendor, _lane:laneOf(p.tier), _rel:relKey(p.rel), _gen:0, _src:"cur",
     _mm:!!p.mm, _lo:p.lo, _hi:p.hi, _n:p.n, _id:p.id, _rep:!!p.rep,
     _tiers:p.tiers, _vis:true });
 });
 HIST.forEach(p=>{
-  histPts.push({ x:PX(p.price), y:p.ability, _price:p.price, _free:(p.price===0),
+  histPts.push({ x:PX(p.cost), y:p.ability, _price:p.price, _free:(p.price===0),
     _name:p.name, _vendor:p.vendor, _lane:laneOf(p.tier), _rel:relKey(p.rel),
     _gen:p.gen, _src:"hist", _mm:!!p.mm, _conf:p.conf, _note:p.note, _vis:true });
 });
 
-// Elo-tab points: same x (price), y = Elo
+// Elo-tab points: same x (per-task cost), y = Elo
 const curEloPts = [], histEloPts = [];
 CURELO.forEach(p=>{
-  curEloPts.push({ x:PX(p.price), y:p.elo, _price:p.price, _free:false, _name:p.name,
+  curEloPts.push({ x:PX(p.cost), y:p.elo, _price:p.price, _cost:p.cost, _est:p.est,
+    _free:false, _name:p.name,
     _vendor:p.vendor, _lane:laneOf(p.tier), _rel:relKey(p.rel), _gen:0, _src:"cur",
     _mm:!!p.mm, _id:p.id, _rep:!!p.rep, _vis:true });
 });
 HISTELO.forEach(p=>{
-  histEloPts.push({ x:PX(p.price), y:p.elo, _price:p.price, _free:(p.price===0),
+  histEloPts.push({ x:PX(p.cost), y:p.elo, _price:p.price, _cost:p.cost, _free:(p.price===0),
     _name:p.name, _vendor:p.vendor, _lane:laneOf(p.tier), _rel:relKey(p.rel),
     _gen:p.gen, _src:"hist", _mm:!!p.mm, _conf:p.conf, _note:p.note, _vis:true });
 });
@@ -306,8 +333,21 @@ const chart = new Chart(ctx, {
     devicePixelRatio: window.devicePixelRatio || 1,
     scales: {
       x: { type:'logarithmic',
-        title:{ display:true, text:'输出价 ¥/百万 token（对数）', color:'#b8b8c8' },
-        ticks:{ color:'#9a9ab0' }, grid:{ color:'#2c2c46' } },
+        title:{ display:true, text:'单任务成本 ¥/任务（对数；AA 指数一次任务）', color:'#b8b8c8' },
+        // the cost axis spans ~3 decades; Chart.js otherwise emits a tick per minor
+        // step and the labels collide into "7050 8060". Keep a clean 1/2/5 ladder.
+        afterBuildTicks: (ax)=>{
+          const lo = Math.log10(ax.min), hi = Math.log10(ax.max), keep = [];
+          for(let e = Math.floor(lo); e <= Math.ceil(hi); e++){
+            [1,2,5].forEach(m=>{
+              const v = m * Math.pow(10, e);
+              if(v >= ax.min*0.999 && v <= ax.max*1.001) keep.push({ value:v });
+            });
+          }
+          ax.ticks = keep;
+        },
+        ticks:{ color:'#9a9ab0', callback:(v)=> (v>=1 ? String(Math.round(v)) : String(+v.toFixed(2))) },
+        grid:{ color:'#2c2c46' } },
       y: { /* bounds are fitted to visible data at runtime (fitView) */
         title:{ display:true, text:'能力分 (v2 统合分；历史代为校准估算)', color:'#b8b8c8' },
         ticks:{ color:'#9a9ab0' }, grid:{ color:'#2c2c46' } }
@@ -317,7 +357,9 @@ const chart = new Chart(ctx, {
       tooltip:{ callbacks:{
         label: c=>{ const d=c.raw;
           if(d._src==="cur") return d._name+"（"+d._lane+"） 分 "+d.y.toFixed(1)+
-            " ["+d._lo.toFixed(1)+"–"+d._hi.toFixed(1)+"] ¥"+d._price+"/M n="+d._n;
+            " ["+d._lo.toFixed(1)+"–"+d._hi.toFixed(1)+"]  单任务 "+
+            (d._est?"≈":"")+"¥"+d._cost.toFixed(2)+
+            "   ¥"+d._price+"/M n="+d._n;
           return d._name+" "+GEN_LABEL[d._gen]+" "+d._rel+" 分(估) "+
             d.y.toFixed(1)+" ¥"+(d._free?"免":d._price)+"/M ["+d._conf+"]"; },
         afterLabel: c=> c.raw._note?c.raw._note:"" }
@@ -363,20 +405,19 @@ const chart = new Chart(ctx, {
             const px0 = x.getPixelForValue(hd.x), py0 = y.getPixelForValue(hd.y);
             const up = Math.max(0, ...rows.map(t=> t.dy));
             const dn = Math.max(0, ...rows.map(t=> -t.dy));
-            const xr = Math.max(0, ...rows.map(t=> Math.log(t.xmul || 1)));
-            const xl = Math.max(0, ...rows.map(t=> -Math.log(t.xmul || 1)));
+
             // pixel budget per direction, clamped to the room actually available so a
             // rung can never be pushed outside the plot (the top point of the cloud has
             // little space above it -> that half compresses instead of flipping over)
             const clamp = (v,lo,hi)=> Math.max(lo, Math.min(hi, v));
             const UP = clamp(py0 - A0.top - 8, 24, 62);
             const DN = clamp(A0.bottom - py0 - 8, 24, 44);
-            const WMAX = 56;
             // screen y grows DOWNWARD: a positive dy (stronger) must subtract pixels
             const dyPx = t => t.dy === 0 ? 0
                            : t.dy > 0 ? -(up ? (t.dy/up)*UP : 0) : -(dn ? (t.dy/dn)*DN : 0);
-            const dxPx = t => { const l = Math.log(t.xmul || 1);
-              return l === 0 ? 0 : l > 0 ? (xr ? (l/xr)*WMAX : 0) : (xl ? (l/xl)*WMAX : 0); };
+            // x is now a REAL cost axis, so a rung's horizontal position is its own
+            // measured cost (anchor x times the tier's cost ratio) -- no compression.
+            const dxPx = t => x.getPixelForValue(hd.x * (t.xmul || 1)) - px0;
             const ax = px0, ay = py0;
             const rp = rows.map(t=> ({t, px: px0 + dxPx(t), py: ay + dyPx(t)}));
             c.save();
@@ -444,7 +485,8 @@ const chart = new Chart(ctx, {
       });
 
       order.forEach(v=>{
-        const w = c.measureText(v.d._name).width, h = FS+2;
+        const lab = ((v.d._src==="cur" && v.d._est) ? "\u2248 " : "") + v.d._name;
+        const w = c.measureText(lab).width, h = FS+2;
         let placed = false;
         for(const gap of [GAP, GAP2]){
           const CAND = [
@@ -462,7 +504,7 @@ const chart = new Chart(ctx, {
                box.y0 < area.top  || box.y1 > area.bottom) continue;
             if(hits(box)) continue;
             c.textAlign = "left"; c.textBaseline = "top"; c.fillStyle = "#dde0f2";
-            c.fillText(v.d._name, bx, by);
+            c.fillText(lab, bx, by);
             boxes.push(box);
             placed = true;
             break;
@@ -627,7 +669,9 @@ function fitView(){
   // different y ranges (composite ~26-59 vs Elo ~1377-1486); fitting the
   // wrong set puts every Elo point outside the viewport (invisible chart).
   const pool = (TAB === 'elo') ? [...curEloPts, ...histEloPts] : [...curPts, ...histPts];
-  const pts = pool.filter(p=>p._vis);
+  // history rows keep _vis=true until applyFilters runs, so trusting _vis alone made
+  // the axis reserve room for hidden generations; ask the chart what is actually shown.
+  const pts = pool.filter(p=> p._vis && (p._src === "cur" || chart.isDatasetVisible(p._gen)));
   const ox = chart.options.scales.x, oy = chart.options.scales.y;
   if(!pts.length){ ox.min=null; ox.max=null; oy.min=null; oy.max=null; chart.update('none'); return; }
   let x0=Infinity, x1=-Infinity, y0=Infinity, y1=-Infinity;
@@ -746,16 +790,18 @@ document.getElementById('zyout').onclick = ()=> zoomAxis('y', 1/0.85);
 document.getElementById('fit').onclick  = ()=> resetView();
 
 // ---- toggles ----
+// toggling a generation changes the x range (history task costs are wider than the
+// current-gen spread), so these three also re-fit -- vendor/lane/rep filters do not.
 document.querySelectorAll('.tg').forEach(b=>{
   b.onclick=()=>{ const g=+b.dataset.gen; const vis=!chart.isDatasetVisible(g);
-    chart.setDatasetVisibility(g,vis); b.classList.toggle('on',vis); applyFilters(); };
+    chart.setDatasetVisibility(g,vis); b.classList.toggle('on',vis); applyFilters(); fitView(); };
 });
 document.getElementById('all').onclick=()=>{
   [1,2,3,4].forEach(g=>{ chart.setDatasetVisibility(g,true);
-    document.querySelector('.tg[data-gen="'+g+'"]').classList.add('on'); }); applyFilters(); };
+    document.querySelector('.tg[data-gen="'+g+'"]').classList.add('on'); }); applyFilters(); fitView(); };
 document.getElementById('reset').onclick=()=>{
   [1,2,3,4].forEach(g=>{ chart.setDatasetVisibility(g,false);
-    document.querySelector('.tg[data-gen="'+g+'"]').classList.remove('on'); }); applyFilters(); };
+    document.querySelector('.tg[data-gen="'+g+'"]').classList.remove('on'); }); applyFilters(); fitView(); };
 document.querySelectorAll('.lane').forEach(b=>{
   b.onclick=()=>{ laneFilter=b.dataset.lane;
     document.querySelectorAll('.lane').forEach(x=>x.classList.toggle('on', x===b)); applyFilters(); };
