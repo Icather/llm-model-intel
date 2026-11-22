@@ -292,6 +292,14 @@ let showLabels = true, repOnly = true, laneFilter = 'all';
 // vendor chips are VISIBILITY toggles (all on by default), not a single-vendor focus
 const hiddenVendors = new Set();
 const DEFAULT_VENDORS = ["OpenAI", "Kimi", "DeepSeek", "阿里", "智谱"];
+// Reasoning-effort ladder: a rung is placed at `anchorY + dy * LADDER_K` in DATA
+// space, so the whole ladder rides the y scale (zoom/hover/fitView) instead of a
+// pixel budget that used to be recomputed from the room around the point -- that
+// budget is what made the rungs jump whenever the axis was rescaled.
+// K < 1 because a raw delta reaches 13-24 composite points while the whole axis
+// spans ~35; at K=0.28 the ladder keeps the visual weight of the old 62px inset
+// at the default view but is now a real, scale-following offset.
+const LADDER_K = 0.28;
 let hoverId = null;   // model name whose effort ladder is being shown
 let wheelMode = 'zoom';                 // 'zoom' (default) | 'pan' (trackpad friendly)
 
@@ -375,23 +383,20 @@ const chart = new Chart(ctx, {
           const A0 = chart.chartArea || {left:0, top:0, right:chart.width, bottom:chart.height};
           if(rows.length){
             const px0 = x.getPixelForValue(hd.x), py0 = y.getPixelForValue(hd.y);
-            const up = Math.max(0, ...rows.map(t=> t.dy));
-            const dn = Math.max(0, ...rows.map(t=> -t.dy));
-
-            // pixel budget per direction, clamped to the room actually available so a
-            // rung can never be pushed outside the plot (the top point of the cloud has
-            // little space above it -> that half compresses instead of flipping over)
-            const clamp = (v,lo,hi)=> Math.max(lo, Math.min(hi, v));
-            const UP = clamp(py0 - A0.top - 8, 24, 62);
-            const DN = clamp(A0.bottom - py0 - 8, 24, 44);
-            // screen y grows DOWNWARD: a positive dy (stronger) must subtract pixels
-            const dyPx = t => t.dy === 0 ? 0
-                           : t.dy > 0 ? -(up ? (t.dy/up)*UP : 0) : -(dn ? (t.dy/dn)*DN : 0);
-            // x is now a REAL cost axis, so a rung's horizontal position is its own
-            // measured cost (anchor x times the tier's cost ratio) -- no compression.
+            // A rung = the same model at another effort, i.e. a CONCRETE score, so its
+            // screen position comes straight from the y scale. Anything else makes the
+            // ladder jump whenever the axis is rescaled (Y+/-, wheel zoom, fitView).
+            // Rungs that fall outside the plot at the current zoom are pinned to the
+            // edge and drawn as a caret -- the label keeps the true AA index + x-cost,
+            // so nothing is silently compressed.
+            const topPad = A0.top + 7, botPad = A0.bottom - 7;
             const dxPx = t => x.getPixelForValue(hd.x * (t.xmul || 1)) - px0;
             const ax = px0, ay = py0;
-            const rp = rows.map(t=> ({t, px: px0 + dxPx(t), py: ay + dyPx(t)}));
+            const rp = rows.map(t=>{
+              const raw = y.getPixelForValue(hd.y + t.dy * LADDER_K);
+              return {t, px: px0 + dxPx(t), py: Math.max(topPad, Math.min(botPad, raw)),
+                      clip: raw < topPad ? "up" : (raw > botPad ? "down" : null)};
+            });
             c.save();
             c.setLineDash([3,3]); c.lineWidth = 1;
             c.strokeStyle = hexA(vcolor(hd._vendor), 0.55);
@@ -410,10 +415,22 @@ const chart = new Chart(ctx, {
             const hitB = b => mk.some(q=> !(b.x1<q.x0 || b.x0>q.x1 || b.y1<q.y0 || b.y0>q.y1))
                             || rungBoxes.some(q=> !(b.x1<q.x0 || b.x0>q.x1 || b.y1<q.y0 || b.y0>q.y1));
             rp.forEach(o=>{
-              c.beginPath(); c.arc(o.px, o.py, 3.6, 0, Math.PI*2);
-              c.fillStyle = hexA(vcolor(hd._vendor), 0.9); c.fill();
-              c.strokeStyle = "#0e0e18"; c.lineWidth = 1; c.stroke();
-              const txt = o.t.effort + " " + o.t.aa.toFixed(0) + " · ×" + o.t.xmul.toFixed(1);
+              if(o.clip){
+                const sgn = o.clip === "up" ? -1 : 1;
+                c.beginPath();
+                c.moveTo(o.px, o.py + sgn*3.6);
+                c.lineTo(o.px - 3.8, o.py - sgn*2.4);
+                c.lineTo(o.px + 3.8, o.py - sgn*2.4);
+                c.closePath();
+                c.fillStyle = hexA(vcolor(hd._vendor), 0.9); c.fill();
+                c.strokeStyle = "#0e0e18"; c.lineWidth = 1; c.stroke();
+              } else {
+                c.beginPath(); c.arc(o.px, o.py, 3.6, 0, Math.PI*2);
+                c.fillStyle = hexA(vcolor(hd._vendor), 0.9); c.fill();
+                c.strokeStyle = "#0e0e18"; c.lineWidth = 1; c.stroke();
+              }
+              const txt = o.t.effort + " " + o.t.aa.toFixed(0) + " · ×" + o.t.xmul.toFixed(1)
+                          + (o.clip ? (o.clip === "up" ? " ↑" : " ↓") : "");
               const w = c.measureText(txt).width, hh = 11;
               let box = null, tx = 0, ty = o.py, al = "left";
               for(const cnd of [[1,0],[-1,0],[1,-1],[1,1],[-1,-1],[-1,1]]){
@@ -686,14 +703,20 @@ function fitView(){
   if(y1-y0 < 1e-9){ y0-=2; y1+=2; }                 // a single y value: give it room
   const yp=(y1-y0)*0.08;
   oy.min=y0-yp; oy.max=y1+yp;
-  // The reasoning-effort ladder is drawn ABOVE the point for higher efforts. If the
-  // top model of the cloud sits flush against the frame there is no room for that
-  // half of the ladder, so reserve a slice of headroom for the tallest ladder among
-  // the visible points (BENCH tab only; the Elo tab has no ladders).
+  // Reserve exactly the room the drawn ladders need (BENCH tab only). Positions are
+  // computed with the SAME LADDER_K used at draw time, so reserving too little would
+  // pin rungs to the edge (caret) and reserving the raw delta would halve the cloud.
   if(TAB !== 'elo'){
-    let upMax = 0;
-    pts.forEach(p=>{ if(p._tiers) p._tiers.forEach(t=>{ if(t.dy > upMax) upMax = t.dy; }); });
-    if(upMax > 0) oy.max = Math.max(oy.max, y1 + upMax*0.55);
+    let topNeed = 0, botNeed = 0;
+    pts.forEach(p=>{ if(!p._tiers) return;
+      p._tiers.forEach(t=>{
+        const v = p.y + t.dy * LADDER_K;
+        if(v > y1) topNeed = Math.max(topNeed, v - y1);
+        if(v < y0) botNeed = Math.max(botNeed, y0 - v);
+      });
+    });
+    if(topNeed > 0) oy.max = Math.max(oy.max, y1 + topNeed + (y1-y0)*0.01);
+    if(botNeed > 0) oy.min = Math.min(oy.min, y0 - botNeed - (y1-y0)*0.01);
   }
   chart.update('none');
 }
