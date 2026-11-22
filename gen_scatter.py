@@ -65,8 +65,8 @@ def hist_task_cost(price_cny):
     return (_TIN * (price_cny * 0.25) + _TOUT * price_cny) / 1e6 * _K
 
 TPL = os.path.join(HERE, "scatter_tpl.html")
-OUT = os.path.join(HERE, "scatter_20261121.html")
-DATE = "2026-11-21"
+OUT = os.path.join(HERE, "scatter_20261122.html")
+DATE = "2026-11-22"
 
 # vendor_id -> canonical Chinese name used in history.json + color map
 VENDOR_CN = {
@@ -131,7 +131,7 @@ REPRESENTATIVE = {
     "anthropic": ["claude-opus-5-5", "claude-fable-5-2", "claude-mythos-5-2",
                   "claude-sonnet-5-5", "claude-haiku-5-5"],
     "openai": ["gpt-6.2-astra", "gpt-6.2-sol", "gpt-6.1-terra", "gpt-6-luna"],
-    "google": ["gemini-4-carbon", "gemini-4-hydrogen"],
+    "google": ["gemini-4-neon", "gemini-4-carbon", "gemini-4-hydrogen"],
     "xai": ["grok-4.7"],
     "meta": ["muse-wonder", "muse-spark-1-3"],
     "zhipu": ["glm-5.3", "glm-5.3-flash"],

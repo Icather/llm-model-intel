@@ -50,9 +50,9 @@ _harness2.js
 
 # ---------- deliverables: only the newest pair is tracked ----------
 master_table_2026*.md
-!master_table_20261121.md
+!master_table_20261122.md
 scatter_2026*.html
-!scatter_20261121.html
+!scatter_20261122.html
 
 # ---------- OS / editor ----------
 .DS_Store
@@ -66,3 +66,12 @@ update_bilibili_*.py
 update_intel_20260831.py
 _hover*.png
 _lad*.png\n_clip*.png\n_vend*.png\n_defvend*.png\n_elo[0-9]*.png\n
+# ---------- ad-hoc probes (2026-11-22) ----------
+_aa_*.html
+_aa_*.py
+_vals_*.html
+_ds_pricing.html
+_ls_2026*.html
+_new_tuples_*.json
+_old_tuples_*.json
+_recompute_*.txt

@@ -1,12 +1,12 @@
 {
  "_meta": {
-  "source": "artificialanalysis.ai model pages (SSR payload), fetched 2026-11-21 (GPT-6.2 added 11/21)",
+  "source": "artificialanalysis.ai model pages (SSR payload), fetched 2026-11-22 (Gemini 4 Neon + GPT-6.1 Sol added 11/22)",
   "index": "AA Intelligence Index (current build)",
   "anchor": "vendor default effort (AA release.defaultEffort)",
   "placement": "tier y = composite + (aa_tier - aa_anchor);  tier x = price * xmul",
   "xmul": "cost per intelligence-index task at that tier / same at anchor (AA intelligenceIndexCostPerTask.cost.total; fallback: output tokens per task)",
   "note": "delta-only translation: the AA index and this composite are not the same ruler, so only tier-to-tier differences are mapped, never absolute values.",
-  "mapped": 19,
+  "mapped": 21,
   "dropped_tiers": {
    "gemini-3-8-flash": [
     "low"
@@ -853,6 +853,112 @@
      "out_tok": 84481,
      "cost_per_task": 0.1359,
      "anchor": true
+    }
+   ]
+  },
+  "gemini-4-neon": {
+   "aa_name": "Gemini 4 Neon",
+   "aa_slug": "gemini-4-neon",
+   "aa_default": "high",
+   "anchor": "high",
+   "tiers": [
+    {
+     "effort": "low",
+     "level": 20,
+     "aa": 44.08,
+     "dy": -15.54,
+     "xmul": 0.199,
+     "out_tok": null,
+     "cost_per_task": 0.7452,
+     "anchor": false
+    },
+    {
+     "effort": "medium",
+     "level": 30,
+     "aa": 54.86,
+     "dy": -4.76,
+     "xmul": 0.509,
+     "out_tok": null,
+     "cost_per_task": 1.9046,
+     "anchor": false
+    },
+    {
+     "effort": "high",
+     "level": 40,
+     "aa": 59.62,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": null,
+     "cost_per_task": 3.7427,
+     "anchor": true
+    },
+    {
+     "effort": "xhigh",
+     "level": 50,
+     "aa": 61.4,
+     "dy": 1.78,
+     "xmul": 1.722,
+     "out_tok": null,
+     "cost_per_task": 6.4448,
+     "anchor": false
+    }
+   ]
+  },
+  "gpt-6.1-sol": {
+   "aa_name": "GPT-6.1 Sol",
+   "aa_slug": "gpt-6-1-sol",
+   "aa_default": "medium",
+   "anchor": "medium",
+   "tiers": [
+    {
+     "effort": "low",
+     "level": 20,
+     "aa": 34.8,
+     "dy": -11.54,
+     "xmul": 0.449,
+     "out_tok": null,
+     "cost_per_task": 0.1615,
+     "anchor": false
+    },
+    {
+     "effort": "medium",
+     "level": 30,
+     "aa": 46.35,
+     "dy": 0.0,
+     "xmul": 1.0,
+     "out_tok": null,
+     "cost_per_task": 0.3594,
+     "anchor": true
+    },
+    {
+     "effort": "high",
+     "level": 40,
+     "aa": 50.33,
+     "dy": 3.98,
+     "xmul": 1.644,
+     "out_tok": null,
+     "cost_per_task": 0.591,
+     "anchor": false
+    },
+    {
+     "effort": "xhigh",
+     "level": 50,
+     "aa": 52.46,
+     "dy": 6.11,
+     "xmul": 2.126,
+     "out_tok": null,
+     "cost_per_task": 0.764,
+     "anchor": false
+    },
+    {
+     "effort": "max",
+     "level": 60,
+     "aa": 54.61,
+     "dy": 8.26,
+     "xmul": 3.54,
+     "out_tok": null,
+     "cost_per_task": 1.2721,
+     "anchor": false
     }
    ]
   }
