@@ -50,9 +50,9 @@ _harness2.js
 
 # ---------- deliverables: only the newest pair is tracked ----------
 master_table_2026*.md
-!master_table_20261122.md
+!master_table_20261125.md
 scatter_2026*.html
-!scatter_20261122.html
+!scatter_20261125.html
 
 # ---------- OS / editor ----------
 .DS_Store

@@ -65,8 +65,8 @@ def hist_task_cost(price_cny):
     return (_TIN * (price_cny * 0.25) + _TOUT * price_cny) / 1e6 * _K
 
 TPL = os.path.join(HERE, "scatter_tpl.html")
-OUT = os.path.join(HERE, "scatter_20261122.html")
-DATE = "2026-11-22"
+OUT = os.path.join(HERE, "scatter_20261125.html")
+DATE = "2026-11-25"
 
 # vendor_id -> canonical Chinese name used in history.json + color map
 VENDOR_CN = {

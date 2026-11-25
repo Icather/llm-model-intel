@@ -1,7 +1,7 @@
 {
  "_meta": {
-  "captured_at": "2026-09-01",
-  "note": "国产大模型情报基线。价格单位 CNY/百万 token（国内口径）。benchmarks 中 is_overall=1 的行才参与 composite 计算；ArenaCode 是编码专项榜，不进通用 composite，仅用于给无通用榜覆盖的模型做桥接估算。 2026-08-29 增量：补入 Qwen3.8-Flash-Next（8/26 发布，此前遗漏）、Hy4 官方 12 项跑分、Arena Code 完整榜、DeepSWE 跨厂商序列（专项榜，一律 is_overall=0）、OpenRouter 日调用量、排队实测数据。 2026-08-31 增量：GLM-5.3 权重 8/29 开源且许可由 MIT 改为自定义 GLM-5.3 License（>100 亿美元营收 MaaS 须过安全审查）；修正 GLM-5.3 发布日期与许可；补入 GLM-5.3 六项专项跑分（Terminal Bench 3.0 = 28.3，非此前误传的 87.9）；Qwen3.8-Flash-Next 补真实 CNY 价 ¥1/¥3；Hy4 补 reasoning_effort 与成本真相口碑。 2026-08-31 增量：GLM-5.3 权重 8/29 开源且许可由 MIT 改为自定义 GLM-5.3 License（>100 亿美元营收 MaaS 须过安全审查）；修正 GLM-5.3 发布日期与许可；补入 GLM-5.3 六项专项跑分（Terminal Bench 3.0 = 28.3，非此前误传的 87.9）；Qwen3.8-Flash-Next 补真实 CNY 价 ¥1/¥3；Hy4 补 reasoning_effort 与成本真相口碑。 2026-08-31 口径修正：ArenaCode 榜按 metric 拆分为 elo_webdev(真实投票) / elo_webdev_max(高思考档变体) / elo_webdev_autoeval(AI 临时分) 三类，此前混在一起导致「GLM-5.3-Flash 反超旗舰 35 分」的假象。\n2026-09-01 增量：新增 qwen3.8-27b（8/5 发布 Apache-2.0 dense 27.8B 原生视觉，llm-stats 45.5 + vals SWE 86.0，此前遗漏）；新增 hy4-lite（腾讯 9/1 Hy4 preview 轻量版，1.5TB→214GB Sherry 三值量化+混合精度，无 API 价）；补 llm-stats 覆盖缺口 doubao-2.1-pro/deepseek-v4-flash/deepseek-v4-flash-vision-exp（此前无 llm-stats 锚）；glm-5.3-flash 补 vals.ai SWE-bench Verified 92.0（同口径超 Qwen3.8 Max 85.6 / V4 Flash 88.8）；Qwen3.8-Flash 生产版 llm-stats 49.6 与 Flash-Next 同架构不重复建模型；阿里 Qwen3-VL-Rerank 降价、智谱中报+GLM-6.0 路线、DeepSeek V4 Pro 0813 涨价、Kimi 老模型 8/31 下线入源。\n2026-09-03 增量：新增国外四大美厂前沿闭源组——OpenAI GPT-5.6 Sol、Anthropic Claude Opus 5 / Claude Fable 5、Google Gemini 3.7 Flash / Gemini 3 Pro、xAI Grok 4.6（共 6 模型 / 4 厂商）。数据来自 2026-09-02 实时行情检索：价取官方 API 价，按 7.1 汇率折算 CNY 标 scenario='estimated'（非实际可用人民币价，图轴据此取 CNY）；能力分取 AA 智能指数 / LMArena / Arena Code / SWE-bench（与国产同榜可比）。国外模型仅 1–2 个综合榜覆盖，v2 composite 受贝叶斯收缩更强，区间更宽，定位为估算参照，勿将其与国产的差值当精确差距。\n2026-09-23 增量：① llm-stats 整组重标定（2026-09-22 Claude Opus 5.5 入场为 #1，全体下移 0.1-1.0），19 个可读模型换板期至 2026-09-23；② **新增 mimo-v2.6-pro**（小米 9/22 发布并开源的代际旗舰，1.02T/42B、MIT、1M 上下文，llm-stats 50.0/46.9/41.4/37.5，价 CNY 3/6），mimo-v2.5-pro 置 is_latest=0；③ 9 家厂商在库模型标准价零变动；vals.ai 榜期仍 9/1 无变化；④ 库外新模型（不入池，只记 sources/notes/signals）：Claude Opus 5.5、OpenAI GPT-6 Sol / GPT-6 Luna、xAI Grok 4.7、小米 MiMo-V2.6-Flash；⑤ 识破第二起价格假警报：第三方聚合站报「DeepSeek 9/21 涨价 +125%」，实为 OpenRouter 别名报价，官方中英文价目未动。⚠️ 待办：Artificial Analysis 智能指数已迭代至 **v4.3.2**（MiMo-V2.6-Pro 46 分为开源第一），库内 `AA/intelligence_index` 组仍为 v4.2，需下次专项维护整组替换，本轮不混版本。\n2026-09-23 扩池（用户指令：取消国产/国外分区，全池统一排名）：① 纳入评分的境外新模型 3 个——claude-opus-5-5（llm-stats 59.7/57.8/51.7/44.5，空降 #1）、gpt-6-sol（49.4/45.6/35.8/36.7）、grok-4.7（48.0/37.1/39.6/35.5），各 4 行 llm-stats @2026-09-23；② 新增待评级 2 个——gpt-6-luna（$0.10/$0.50）、mimo-v2.6-flash（309B/15B，MIT，¥1/¥2），仅建 model/price 行、不参与排名（无第三方榜单分）；③ is_latest 置 0：claude-opus-5（被 Opus 5.5 取代）、grok-4.6（被 Grok 4.7 取代），历史行全保留；④ 新增 9 个价格行（境外 4 个模型 USD standard + CNY estimated @7.1，小米 flash 为 CNY standard）；⑤ 生成器同步改造：去掉标题与选型结论中的国产/国外分区，改为全球统一排名表述。",
+  "captured_at": "2026-11-25",
+  "note": "国产大模型情报基线。价格单位 CNY/百万 token（国内口径）。benchmarks 中 is_overall=1 的行才参与 composite 计算；ArenaCode 是编码专项榜，不进通用 composite，仅用于给无通用榜覆盖的模型做桥接估算。 2026-08-29 增量：补入 Qwen3.8-Flash-Next（8/26 发布，此前遗漏）、Hy4 官方 12 项跑分、Arena Code 完整榜、DeepSWE 跨厂商序列（专项榜，一律 is_overall=0）、OpenRouter 日调用量、排队实测数据。 2026-08-31 增量：GLM-5.3 权重 8/29 开源且许可由 MIT 改为自定义 GLM-5.3 License（>100 亿美元营收 MaaS 须过安全审查）；修正 GLM-5.3 发布日期与许可；补入 GLM-5.3 六项专项跑分（Terminal Bench 3.0 = 28.3，非此前误传的 87.9）；Qwen3.8-Flash-Next 补真实 CNY 价 ¥1/¥3；Hy4 补 reasoning_effort 与成本真相口碑。 2026-08-31 增量：GLM-5.3 权重 8/29 开源且许可由 MIT 改为自定义 GLM-5.3 License（>100 亿美元营收 MaaS 须过安全审查）；修正 GLM-5.3 发布日期与许可；补入 GLM-5.3 六项专项跑分（Terminal Bench 3.0 = 28.3，非此前误传的 87.9）；Qwen3.8-Flash-Next 补真实 CNY 价 ¥1/¥3；Hy4 补 reasoning_effort 与成本真相口碑。 2026-08-31 口径修正：ArenaCode 榜按 metric 拆分为 elo_webdev(真实投票) / elo_webdev_max(高思考档变体) / elo_webdev_autoeval(AI 临时分) 三类，此前混在一起导致「GLM-5.3-Flash 反超旗舰 35 分」的假象。\n2026-09-01 增量：新增 qwen3.8-27b（8/5 发布 Apache-2.0 dense 27.8B 原生视觉，llm-stats 45.5 + vals SWE 86.0，此前遗漏）；新增 hy4-lite（腾讯 9/1 Hy4 preview 轻量版，1.5TB→214GB Sherry 三值量化+混合精度，无 API 价）；补 llm-stats 覆盖缺口 doubao-2.1-pro/deepseek-v4-flash/deepseek-v4-flash-vision-exp（此前无 llm-stats 锚）；glm-5.3-flash 补 vals.ai SWE-bench Verified 92.0（同口径超 Qwen3.8 Max 85.6 / V4 Flash 88.8）；Qwen3.8-Flash 生产版 llm-stats 49.6 与 Flash-Next 同架构不重复建模型；阿里 Qwen3-VL-Rerank 降价、智谱中报+GLM-6.0 路线、DeepSeek V4 Pro 0813 涨价、Kimi 老模型 8/31 下线入源。\n2026-09-03 增量：新增国外四大美厂前沿闭源组——OpenAI GPT-5.6 Sol、Anthropic Claude Opus 5 / Claude Fable 5、Google Gemini 3.7 Flash / Gemini 3 Pro、xAI Grok 4.6（共 6 模型 / 4 厂商）。数据来自 2026-09-02 实时行情检索：价取官方 API 价，按 7.1 汇率折算 CNY 标 scenario='estimated'（非实际可用人民币价，图轴据此取 CNY）；能力分取 AA 智能指数 / LMArena / Arena Code / SWE-bench（与国产同榜可比）。国外模型仅 1–2 个综合榜覆盖，v2 composite 受贝叶斯收缩更强，区间更宽，定位为估算参照，勿将其与国产的差值当精确差距。\n2026-09-23 增量：① llm-stats 整组重标定（2026-09-22 Claude Opus 5.5 入场为 #1，全体下移 0.1-1.0），19 个可读模型换板期至 2026-09-23；② **新增 mimo-v2.6-pro**（小米 9/22 发布并开源的代际旗舰，1.02T/42B、MIT、1M 上下文，llm-stats 50.0/46.9/41.4/37.5，价 CNY 3/6），mimo-v2.5-pro 置 is_latest=0；③ 9 家厂商在库模型标准价零变动；vals.ai 榜期仍 9/1 无变化；④ 库外新模型（不入池，只记 sources/notes/signals）：Claude Opus 5.5、OpenAI GPT-6 Sol / GPT-6 Luna、xAI Grok 4.7、小米 MiMo-V2.6-Flash；⑤ 识破第二起价格假警报：第三方聚合站报「DeepSeek 9/21 涨价 +125%」，实为 OpenRouter 别名报价，官方中英文价目未动。⚠️ 待办：Artificial Analysis 智能指数已迭代至 **v4.3.2**（MiMo-V2.6-Pro 46 分为开源第一），库内 `AA/intelligence_index` 组仍为 v4.2，需下次专项维护整组替换，本轮不混版本。\n2026-09-23 扩池（用户指令：取消国产/国外分区，全池统一排名）：① 纳入评分的境外新模型 3 个——claude-opus-5-5（llm-stats 59.7/57.8/51.7/44.5，空降 #1）、gpt-6-sol（49.4/45.6/35.8/36.7）、grok-4.7（48.0/37.1/39.6/35.5），各 4 行 llm-stats @2026-09-23；② 新增待评级 2 个——gpt-6-luna（$0.10/$0.50）、mimo-v2.6-flash（309B/15B，MIT，¥1/¥2），仅建 model/price 行、不参与排名（无第三方榜单分）；③ is_latest 置 0：claude-opus-5（被 Opus 5.5 取代）、grok-4.6（被 Grok 4.7 取代），历史行全保留；④ 新增 9 个价格行（境外 4 个模型 USD standard + CNY estimated @7.1，小米 flash 为 CNY standard）；⑤ 生成器同步改造：去掉标题与选型结论中的国产/国外分区，改为全球统一排名表述。\n2026-11-25 增量：llm-stats 页面构建戳为当日但 456 条目与 11/22 板逐值相同（0 变 0 增 0 减）→ 按「top-12 逐位一致可跳过」不刷新板期。新增 glm-5.4（智谱 11/23 Loop Transformer 旗舰，官方 API 未开、无第三方分 → 待评级）；ernie-5.5-flash 权重 11/24 开源（Apache-2.0）→ open_weights 0→1；腾讯 Hy MT3 翻译模型只记档。",
   "last_updated": "2026-11-21"
  },
  "vendors": [
@@ -98,8 +98,8 @@
    "multimodal_in": 0,
    "open_weights": 1,
    "license": "GLM-5.3 License（自定义，非 MIT）",
-   "is_latest": 1,
-   "notes": "2026-08-14 以 API/订阅形式发布（原计划 8/25 开源权重，因网络安全能力增长超出预期延后至 8/28 23:00 UTC = 8/29 北京时间清晨，上 HF zai-org/GLM-5.3（commit 7cda819）与 ModelScope 镜像；141 个 safetensors 分片，FP8+BF16 合计 756GB（BF16 单独约 1.51TB）。⚠️ 许可变更：GLM-5.2/5.1/5.0 与 GLM-5.3-Flash 均为 MIT，GLM-5.3 改用自定义 GLM-5.3 License——个人/创业公司权利与 MIT 基本相同（可下载、修改、分发、部署、微调、销售衍生版），唯一新增：以 MaaS 形式对外提供 GLM-5.3、且关联方任意连续 12 个月累计营收 >100 亿美元的服务商，商用前须通过 Z.ai 安全审查（实为针对 hyperscaler 的条款威慑，非对个人限制）。许可证本身无 acceptable-use 条款，也不约束进攻性安全研究。参数口径存在分歧：cnBeta/深度文 743–744B/A40B，The New Stack 等沿用 753B（与 GLM-5.2 同基座），本库暂记 744，激活 40B。架构与 GLM-5.2 完全一致（256 routed expert、top-8、max_position 1,048,576），能力提升全部来自后训练。 📈 2026-09-14 补录：SuperCLUE 2026-07 期补测（9/11 更新）总分 71.29（数学推理 70.59 / 幻觉控制 79.35 / 科学推理 75.44 / 精确指令遵循 40.00 / 智能体编程 76.84 / 智能体任务规划 91.15），与 Qwen3.8-Max(max) 71.48、Kimi-K3 70.68 同处 1 分并列档；注意同基座的 GLM-5.2 亦在榜（63.27），「GLM-5.3 vs 5.2」的 +8 分差来自后训练规模扩大而非重新预训练。 💰 厂商侧：9/13 智谱公告约 50 亿美元融资（20 亿股份配售 + 30 亿零息可转债，配售价 714 港元/股），净额主要投向下一代 GLM、完全自训练（递归自我改进）体系与国产算力；管理层将 GLM-6.0 定义为「自进化」——需具备自主判断何时停止/自我纠正。 2026-09-23 复核 open.bigmodel.cn/pricing：GLM-5.3 仍输入 ¥8 / 缓存命中 ¥2 / 输出 ¥28；GLM-5.3-Flash 标准 ¥0.8/¥0.23/¥2.8（FAQ 仍挂「限时五折 ¥0.4/¥0.115/¥1.4」）；免费档 GLM-4.7-Flash / GLM-4.6V-Flash；Batch API 五折。旗舰区无新增模型。llm-stats 本日整组重标定后 GLM-5.3 由 52.7 降至 52.1（四维 52.1/51.2/41.8/38.5），仍居国产第 2-3 位。9/18 上线的 GLM-5.3-FlashX（¥2/¥0.57/¥7）维持 9/20 判定：同权重速度档，不建行。 2026-09-25 复核：GLM-5.3 仍标「最新旗舰」，¥8/缓存 2/¥28 未变；GLM-5.3-Flash 标准价 ¥0.8/缓存 0.23/¥2.8 未变，FAQ 仍挂限时五折（¥0.4/1.4）；旗舰区无新模型。 2026-09-27 复核：GLM-5.3 仍标「最新旗舰」¥8/缓存 2/¥28 未变；GLM-5.3-Flash 标准价 ¥0.8/缓存 0.23/¥2.8 未变（FAQ 仍挂限时五折 ¥0.4/1.4）。⚠️ readaitime 报「GLM 5.3 Flash 输出 $0.14→$0.50（+257%）」为路由报价假警报，官方价目一字未动。 2026-09-28 复核：GLM-5.3 仍标「最新旗舰」¥8/缓存 2/¥28 未变；GLM-5.3-Flash 标准价 ¥0.8/缓存 0.23/¥2.8 未变（FAQ 仍挂限时五折 ¥0.4/1.4）；其它模型区 GLM-5.2 仍为 ¥8/缓存 2/¥28。⚠️ 本窗口新事件为**宣讲而非发版**：Z.ai 李梓萱在 AI Engineer World's Fair 会上称 GLM-5.2（MIT 开源权重）在长时程编码/Agent 评测上「介于 Claude Opus 4.7 与 4.8 之间」、非思考模式胜过 GLM-5.1 思考模式，并发布自家 Agent harness **Z Code**（兼容第三方模型 BYOK）。GLM-5.2 为 6 月世代模型，价格与库内口径一致 → 不入池。 2026-09-30 复核：GLM-5.3 仍标「最新旗舰」¥8/缓存 2/¥28 未变；GLM-5.3-Flash 标准价 ¥0.8/缓存 0.23/¥2.8 未变（FAQ 仍挂限时五折 ¥0.4/1.4）；其它模型区 GLM-5.2 仍为 ¥8/缓存 2/¥28。🆕 库外新 SKU **GLM-5.3-Prime**（9/23 上线 OpenRouter，$2.80/$8.80、缓存读取 $0.56）：官方口径为 GLM-5.3 的**高吞吐推理档**（1.5~2 倍输出吞吐、承接 1M 上下文与全部能力，推理强制开启且默认 max），与 9/18 的 FlashX 属同一模式（**同权重、改 Infra、新 Model Key**）→ **不建 model 行、不加 price 行，只记档**。⚠️ Z.ai 未披露参数量与独立基准，吞吐声明为厂商自报。｜**10/04 复核**：智谱价格页仍为 GLM-5.3 输入 ¥8 / 缓存命中 **¥2** / 输出 ¥28 —— 本库此前记录的缓存命中 ¥2.3 系历史录入偏差，本日按官方页更正为 2.0（输出价 28 未动，不涉阈值）。官方页无 GLM-5.3-Max 条目；10/1 Cursor 上架的「GLM 5.3 Max」只是 GLM-5.3 的 **Max 推理档**（Cursor 提供 Low/High/Max，默认 High），非独立 SKU。｜**10/07 复核**：**10/5 起 GLM-5.3 正式上架 Amazon Bedrock**（AWS 按调用量分成），属渠道事件，厂商标准价未动（CN 输入 ¥8 / 缓存命中 ¥2 / 输出 ¥28）。网传「GLM-5.3-Flash 促销结束 + 新增 GLM-5.3-FlashX 档」经核为**海外 USD 口径的 9 月旧事**（五折期 9/9 到期、FlashX 9/18 上架），本库 CN 标准行不受影响。 2026-10-11 复核：官网价格页仍为 GLM-5.3 输入 ¥8 / 缓存命中 ¥2 / 缓存存储限时免费 / 输出 ¥28，GLM-5.3-Flash 标准 ¥0.8/¥0.23/¥2.8（FAQ 仍挂「限时五折 ¥0.4/¥0.115/¥1.4」，以价格表为准）；免费档 GLM-4.7-Flash（200K）与 GLM-4.6V-Flash；旗舰区无新模型。llm-stats 重标定后 51.5/50.7/40.5/37.3（−0.5）。 2026-10-14 复核 llm-stats：51.3/51.0/40.1/37.1（−0.2）。官网价格页逐项未变（输入 ¥8 / 缓存命中 ¥2 / 输出 ¥28；Flash ¥0.8/¥0.23/¥2.8）。⚠️ 10/12 起 Zcode 平台灰度 **GLM-5.3-Highspeed**（实测 ≈490 tok/s、1M 上下文、low/high/max 三档）——速度档 / 平台内灰度，不单独入池。 2026-10-18 复核 llm-stats：51.5/50.7/40.5/37.3（Overall +0.2），全站第 13。官网价格页逐项未变（输入 ¥8 / 缓存 ¥2 / 输出 ¥28）。GLM-5.3-Highspeed 仍为 Zcode 平台灰度，未单独上架公开 API。 2026-10-21 复核 llm-stats：50.8/50.5/39.2/36.9（Overall −0.7、Coding −1.3），全站第 16。官网价格页逐项未变（输入 ¥8 / 缓存 ¥2 / 输出 ¥28）。⚠️ 10/15 arXiv 论文《Can Visual Generation Expand What Unified Multimodal Models Know?》披露智谱内部多模态模型 **GLM-Omni**（由 GLM-4.1V-Thinking 检查点初始化、X-Omni 离散图像 tokenizer），社交平台把它与「GLM-5.5」联想 —— **论文非发布**，且未披露版本对应，仅记档。 2026-10-25 复核 llm-stats：50.9/50.7/39.4/37.0（全站 #16）。官网价格页未变（¥8/缓存 ¥2/¥28）。⚠️ 36氪 10/23 报道 GLM-5.5 传闻（参数 2.5~3.5 万亿、可能用循环 Transformer），依据仅为官方补偿公告里「新模型发布后再赠额度重置」一句 + 社区爆料 → **未发布，只记档**。 2026-10-28 复核：官网价格页与模型列表未变（仍以 GLM-5.3 为最新旗舰，¥8/缓存 ¥2/¥28）。10/27 雷锋网/网易报道清华-智谱论文披露 GLM-Omni（统一视觉理解+图像生成的**内部**模型，MagicWorld 虚构世界实验：视觉正确率 54.00% vs 文字提问 14.57%），社交平台据此猜测「GLM-5.5 将至」→ 论文未披露版本对应关系，**仍未发布，只记档**。 2026-11-08 复核：🔴 **「智谱 11/1 开源 GLM 5.2（7440 亿 / 400 亿激活 / MIT / 四档量化）」为旧闻翻炒**——多家独立资料显示 GLM-5.2 发布于 **2026-06-13**（dev.to 技术长文 Release Date 6/13、aiproplaybook 记 GLM 5.2 June 2026），参数 744B/约 40B、同 1M/MIT；中文站点把 11/1 误当发布日 → **不计入新增动态**（本任务历史踩坑 #1 的第 N 次复现）。在售主线仍为 GLM-5.3（¥8/¥2/¥28 未变）；11/2 新增 **GLM-5.3-FlashX-Legal（GLM-Legal）** 法律垂类变体（$0.37/$1.25、1M 上下文，属支线不建行）；Cursor 已上线 GLM-5.3 / GLM-5.3-Flash。摩根大通 11/4 将智谱列为中国 AI 首选，预计 11 月推 GLM-5.5 / GLM-6（**传闻，无官方发布**）。"
+   "is_latest": 0,
+   "notes": "2026-08-14 以 API/订阅形式发布（原计划 8/25 开源权重，因网络安全能力增长超出预期延后至 8/28 23:00 UTC = 8/29 北京时间清晨，上 HF zai-org/GLM-5.3（commit 7cda819）与 ModelScope 镜像；141 个 safetensors 分片，FP8+BF16 合计 756GB（BF16 单独约 1.51TB）。⚠️ 许可变更：GLM-5.2/5.1/5.0 与 GLM-5.3-Flash 均为 MIT，GLM-5.3 改用自定义 GLM-5.3 License——个人/创业公司权利与 MIT 基本相同（可下载、修改、分发、部署、微调、销售衍生版），唯一新增：以 MaaS 形式对外提供 GLM-5.3、且关联方任意连续 12 个月累计营收 >100 亿美元的服务商，商用前须通过 Z.ai 安全审查（实为针对 hyperscaler 的条款威慑，非对个人限制）。许可证本身无 acceptable-use 条款，也不约束进攻性安全研究。参数口径存在分歧：cnBeta/深度文 743–744B/A40B，The New Stack 等沿用 753B（与 GLM-5.2 同基座），本库暂记 744，激活 40B。架构与 GLM-5.2 完全一致（256 routed expert、top-8、max_position 1,048,576），能力提升全部来自后训练。 📈 2026-09-14 补录：SuperCLUE 2026-07 期补测（9/11 更新）总分 71.29（数学推理 70.59 / 幻觉控制 79.35 / 科学推理 75.44 / 精确指令遵循 40.00 / 智能体编程 76.84 / 智能体任务规划 91.15），与 Qwen3.8-Max(max) 71.48、Kimi-K3 70.68 同处 1 分并列档；注意同基座的 GLM-5.2 亦在榜（63.27），「GLM-5.3 vs 5.2」的 +8 分差来自后训练规模扩大而非重新预训练。 💰 厂商侧：9/13 智谱公告约 50 亿美元融资（20 亿股份配售 + 30 亿零息可转债，配售价 714 港元/股），净额主要投向下一代 GLM、完全自训练（递归自我改进）体系与国产算力；管理层将 GLM-6.0 定义为「自进化」——需具备自主判断何时停止/自我纠正。 2026-09-23 复核 open.bigmodel.cn/pricing：GLM-5.3 仍输入 ¥8 / 缓存命中 ¥2 / 输出 ¥28；GLM-5.3-Flash 标准 ¥0.8/¥0.23/¥2.8（FAQ 仍挂「限时五折 ¥0.4/¥0.115/¥1.4」）；免费档 GLM-4.7-Flash / GLM-4.6V-Flash；Batch API 五折。旗舰区无新增模型。llm-stats 本日整组重标定后 GLM-5.3 由 52.7 降至 52.1（四维 52.1/51.2/41.8/38.5），仍居国产第 2-3 位。9/18 上线的 GLM-5.3-FlashX（¥2/¥0.57/¥7）维持 9/20 判定：同权重速度档，不建行。 2026-09-25 复核：GLM-5.3 仍标「最新旗舰」，¥8/缓存 2/¥28 未变；GLM-5.3-Flash 标准价 ¥0.8/缓存 0.23/¥2.8 未变，FAQ 仍挂限时五折（¥0.4/1.4）；旗舰区无新模型。 2026-09-27 复核：GLM-5.3 仍标「最新旗舰」¥8/缓存 2/¥28 未变；GLM-5.3-Flash 标准价 ¥0.8/缓存 0.23/¥2.8 未变（FAQ 仍挂限时五折 ¥0.4/1.4）。⚠️ readaitime 报「GLM 5.3 Flash 输出 $0.14→$0.50（+257%）」为路由报价假警报，官方价目一字未动。 2026-09-28 复核：GLM-5.3 仍标「最新旗舰」¥8/缓存 2/¥28 未变；GLM-5.3-Flash 标准价 ¥0.8/缓存 0.23/¥2.8 未变（FAQ 仍挂限时五折 ¥0.4/1.4）；其它模型区 GLM-5.2 仍为 ¥8/缓存 2/¥28。⚠️ 本窗口新事件为**宣讲而非发版**：Z.ai 李梓萱在 AI Engineer World's Fair 会上称 GLM-5.2（MIT 开源权重）在长时程编码/Agent 评测上「介于 Claude Opus 4.7 与 4.8 之间」、非思考模式胜过 GLM-5.1 思考模式，并发布自家 Agent harness **Z Code**（兼容第三方模型 BYOK）。GLM-5.2 为 6 月世代模型，价格与库内口径一致 → 不入池。 2026-09-30 复核：GLM-5.3 仍标「最新旗舰」¥8/缓存 2/¥28 未变；GLM-5.3-Flash 标准价 ¥0.8/缓存 0.23/¥2.8 未变（FAQ 仍挂限时五折 ¥0.4/1.4）；其它模型区 GLM-5.2 仍为 ¥8/缓存 2/¥28。🆕 库外新 SKU **GLM-5.3-Prime**（9/23 上线 OpenRouter，$2.80/$8.80、缓存读取 $0.56）：官方口径为 GLM-5.3 的**高吞吐推理档**（1.5~2 倍输出吞吐、承接 1M 上下文与全部能力，推理强制开启且默认 max），与 9/18 的 FlashX 属同一模式（**同权重、改 Infra、新 Model Key**）→ **不建 model 行、不加 price 行，只记档**。⚠️ Z.ai 未披露参数量与独立基准，吞吐声明为厂商自报。｜**10/04 复核**：智谱价格页仍为 GLM-5.3 输入 ¥8 / 缓存命中 **¥2** / 输出 ¥28 —— 本库此前记录的缓存命中 ¥2.3 系历史录入偏差，本日按官方页更正为 2.0（输出价 28 未动，不涉阈值）。官方页无 GLM-5.3-Max 条目；10/1 Cursor 上架的「GLM 5.3 Max」只是 GLM-5.3 的 **Max 推理档**（Cursor 提供 Low/High/Max，默认 High），非独立 SKU。｜**10/07 复核**：**10/5 起 GLM-5.3 正式上架 Amazon Bedrock**（AWS 按调用量分成），属渠道事件，厂商标准价未动（CN 输入 ¥8 / 缓存命中 ¥2 / 输出 ¥28）。网传「GLM-5.3-Flash 促销结束 + 新增 GLM-5.3-FlashX 档」经核为**海外 USD 口径的 9 月旧事**（五折期 9/9 到期、FlashX 9/18 上架），本库 CN 标准行不受影响。 2026-10-11 复核：官网价格页仍为 GLM-5.3 输入 ¥8 / 缓存命中 ¥2 / 缓存存储限时免费 / 输出 ¥28，GLM-5.3-Flash 标准 ¥0.8/¥0.23/¥2.8（FAQ 仍挂「限时五折 ¥0.4/¥0.115/¥1.4」，以价格表为准）；免费档 GLM-4.7-Flash（200K）与 GLM-4.6V-Flash；旗舰区无新模型。llm-stats 重标定后 51.5/50.7/40.5/37.3（−0.5）。 2026-10-14 复核 llm-stats：51.3/51.0/40.1/37.1（−0.2）。官网价格页逐项未变（输入 ¥8 / 缓存命中 ¥2 / 输出 ¥28；Flash ¥0.8/¥0.23/¥2.8）。⚠️ 10/12 起 Zcode 平台灰度 **GLM-5.3-Highspeed**（实测 ≈490 tok/s、1M 上下文、low/high/max 三档）——速度档 / 平台内灰度，不单独入池。 2026-10-18 复核 llm-stats：51.5/50.7/40.5/37.3（Overall +0.2），全站第 13。官网价格页逐项未变（输入 ¥8 / 缓存 ¥2 / 输出 ¥28）。GLM-5.3-Highspeed 仍为 Zcode 平台灰度，未单独上架公开 API。 2026-10-21 复核 llm-stats：50.8/50.5/39.2/36.9（Overall −0.7、Coding −1.3），全站第 16。官网价格页逐项未变（输入 ¥8 / 缓存 ¥2 / 输出 ¥28）。⚠️ 10/15 arXiv 论文《Can Visual Generation Expand What Unified Multimodal Models Know?》披露智谱内部多模态模型 **GLM-Omni**（由 GLM-4.1V-Thinking 检查点初始化、X-Omni 离散图像 tokenizer），社交平台把它与「GLM-5.5」联想 —— **论文非发布**，且未披露版本对应，仅记档。 2026-10-25 复核 llm-stats：50.9/50.7/39.4/37.0（全站 #16）。官网价格页未变（¥8/缓存 ¥2/¥28）。⚠️ 36氪 10/23 报道 GLM-5.5 传闻（参数 2.5~3.5 万亿、可能用循环 Transformer），依据仅为官方补偿公告里「新模型发布后再赠额度重置」一句 + 社区爆料 → **未发布，只记档**。 2026-10-28 复核：官网价格页与模型列表未变（仍以 GLM-5.3 为最新旗舰，¥8/缓存 ¥2/¥28）。10/27 雷锋网/网易报道清华-智谱论文披露 GLM-Omni（统一视觉理解+图像生成的**内部**模型，MagicWorld 虚构世界实验：视觉正确率 54.00% vs 文字提问 14.57%），社交平台据此猜测「GLM-5.5 将至」→ 论文未披露版本对应关系，**仍未发布，只记档**。 2026-11-08 复核：🔴 **「智谱 11/1 开源 GLM 5.2（7440 亿 / 400 亿激活 / MIT / 四档量化）」为旧闻翻炒**——多家独立资料显示 GLM-5.2 发布于 **2026-06-13**（dev.to 技术长文 Release Date 6/13、aiproplaybook 记 GLM 5.2 June 2026），参数 744B/约 40B、同 1M/MIT；中文站点把 11/1 误当发布日 → **不计入新增动态**（本任务历史踩坑 #1 的第 N 次复现）。在售主线仍为 GLM-5.3（¥8/¥2/¥28 未变）；11/2 新增 **GLM-5.3-FlashX-Legal（GLM-Legal）** 法律垂类变体（$0.37/$1.25、1M 上下文，属支线不建行）；Cursor 已上线 GLM-5.3 / GLM-5.3-Flash。摩根大通 11/4 将智谱列为中国 AI 首选，预计 11 月推 GLM-5.5 / GLM-6（**传闻，无官方发布**）。 ｜**2026-11-25 复核**：11/23 智谱发布 **GLM-5.4**（Loop Transformer，750B 基座 / 1M 上下文 / 首个带视觉的GLM 旗舰）→ 本行 **is_latest 置 0**（仍正常在售，价格未变：输入 ¥8 / 缓存 ¥2 / 输出 ¥28）。⚠️ GLM-5.4 的官方 Model API 尚未开放，官方牌价仍只到 GLM-5.3 —— 所以「GLM-5.4 只卖 Coding Plan」是当前事实，不是渠道遗漏。llm-stats 11/25 页面构建戳已更新但四维与 11/22 板逐值相同 → 本轮不刷新。"
   },
   {
    "id": "glm-5.3-flash",
@@ -766,10 +766,10 @@
    "context_in": 1048576,
    "context_out": null,
    "multimodal_in": 0,
-   "open_weights": 0,
-   "license": "",
+   "open_weights": 1,
+   "license": "Apache-2.0",
    "is_latest": 1,
-   "notes": "2026-11-11 发布（百度世界 2026 / 千帆 API 当日开放），是 11/5 已发布的 ERNIE-5.5-Flash-Base 的**首个后训练版本**——即 Base 只是预训练终点、不可对话，本行才是可用的 Flash 档。规格：280B 总参 / 14B 激活、1M 上下文、生成速度 >200 tok/s、纯文本输入（text→text，非多模态）。官方称 14 项基准超过 DeepSeek-V4.1-Flash-1017，8 项基准拿下 2 项第一（自报，非第三方）。**价格（千帆官方价目，2026-11-11 更新）**：高峰输入 ¥2 / 缓存 ¥0.2 / 输出 ¥8，空闲时段五折（¥1 / ¥0.1 / ¥4）；2026-11-11 至 11-30 全时段再打五折 → promo 行 ¥1 / ¥0.1 / ¥4。**权重：官方中英文页均承诺 2026-11-25 前开源（英文页写明 Apache 2.0）→ 当前 open_weights=0，许可证待权重放出后核实补填。**llm-stats 11/15 板首次收录即 **全榜第 13**（52.33 / 50.71 / 37.90 / 38.50）——**Coding 37.90 与 Agent 38.50 双双高于 Qwen3.8 Max（36.05 / 34.54）与 GLM-5.3（37.83 / 35.41）**，在开源/闭源统一口径下已是境内厂商第一梯队的 Flash 档。⚠️ 它是 Flash 档而非旗舰：百度旗舰线仍是 ERNIE 5.1，本行与旗舰是并行的两条线，不是替代关系。 2026-11-18：llm-stats **#19**（51.24 / 49.56 / 37.14 / 37.87，较 11/15 板四维下移 0.6~1.1），全池位次由第 7 退至第 6 附近（被新入池的 Qwen4-Max 挤压）。千帆页仍挂「限时 5 折尝鲜」，标准价 ¥2/¥0.2/¥8 未变；**权重开源承诺（11/25 前、Apache 2.0）尚未兑现**，open_weights 仍为 0。"
+   "notes": "2026-11-11 发布（百度世界 2026 / 千帆 API 当日开放），是 11/5 已发布的 ERNIE-5.5-Flash-Base 的**首个后训练版本**——即 Base 只是预训练终点、不可对话，本行才是可用的 Flash 档。规格：280B 总参 / 14B 激活、1M 上下文、生成速度 >200 tok/s、纯文本输入（text→text，非多模态）。官方称 14 项基准超过 DeepSeek-V4.1-Flash-1017，8 项基准拿下 2 项第一（自报，非第三方）。**价格（千帆官方价目，2026-11-11 更新）**：高峰输入 ¥2 / 缓存 ¥0.2 / 输出 ¥8，空闲时段五折（¥1 / ¥0.1 / ¥4）；2026-11-11 至 11-30 全时段再打五折 → promo 行 ¥1 / ¥0.1 / ¥4。**权重：官方中英文页均承诺 2026-11-25 前开源（英文页写明 Apache 2.0）→ 当前 open_weights=0，许可证待权重放出后核实补填。**llm-stats 11/15 板首次收录即 **全榜第 13**（52.33 / 50.71 / 37.90 / 38.50）——**Coding 37.90 与 Agent 38.50 双双高于 Qwen3.8 Max（36.05 / 34.54）与 GLM-5.3（37.83 / 35.41）**，在开源/闭源统一口径下已是境内厂商第一梯队的 Flash 档。⚠️ 它是 Flash 档而非旗舰：百度旗舰线仍是 ERNIE 5.1，本行与旗舰是并行的两条线，不是替代关系。 2026-11-18：llm-stats **#19**（51.24 / 49.56 / 37.14 / 37.87，较 11/15 板四维下移 0.6~1.1），全池位次由第 7 退至第 6 附近（被新入池的 Qwen4-Max 挤压）。千帆页仍挂「限时 5 折尝鲜」，标准价 ¥2/¥0.2/¥8 未变；**权重开源承诺（11/25 前、Apache 2.0）尚未兑现**，open_weights 仍为 0。 ｜✅ **2026-11-24 权重已开源，11/25 承诺按期兑现**：百度正式开放 ERNIE 5.5 Flash Preview 权重（Hugging Face `baidu/ERNIE-5.5-Flash-Preview` / ModelScope），**Apache-2.0**，含 3 层 DSpark 投机解码草稿模型；280B 总参 / 14B 激活、43 层（37 层 HCA 重度压缩注意力 + 6 层 MLA-DSA）、1M 上下文；vLLM / SGLang 与昆仑芯 Day-0 适配（INT4 权重另发）。→ `open_weights` 0→1、`license` 补为 Apache-2.0。新公布基准（**厂商自报，不入 z 分布**）：AutomationBench 61.9（Opus 5.5 58.0 / DS-V4.1-Flash 57.2）、Terminal-Bench 4.0 46.5（Opus 5.5 63.6 / DS-1017 40.9）、CodeArena WebDev 1668（开源第 2、国产第 4）。⚠️ 定位仍是**Flash 档**，AutomationBench 强、Terminal-Bench 弱 = 「办公/知识工作强、长程终端工程弱」的偏科形态与 llm-stats 四维一致。"
   },
   {
    "id": "qwen4-max",
@@ -1048,6 +1048,25 @@
    "license": "Proprietary",
    "is_latest": 1,
    "notes": "2026-09-30 发布（llm-stats 记 09-29，美东时区），11/22 补录入池 —— Sol 线此前只跟到 GPT-6 Sol、11/21 又只补了 Terra，**Sol 的 6.1 代一直被漏掉**，属覆盖度缺口而非新发布。GPT-6 Sol 的升级版：**$2 入 / $0.10 缓存（较 6 Sol 的 0.20 再降 50%）/ $10 出**，1M 上下文，官方定位「Astra 五分之一价格的近似智能」。llm-stats 11/22 板 #15（51.84/49.22/37.27/35.92）—— **比同价的 GPT-6 Sol（45.72 分榜 #50）高 6.1**；官方自报 DeepSWE v1.1（high）75.2% vs GPT-6 Sol 的 68.8%、OSWorld 2.0 71.4%（Astra 73.5%）；AA 智能指数默认 medium 46.3、max 54.6，单任务成本（默认 medium）$0.36。"
+  },
+  {
+   "id": "glm-5.4",
+   "vendor_id": "zhipu",
+   "name": "GLM-5.4",
+   "generation": "5.4",
+   "tier": "flagship",
+   "release_date": "2026-11-23",
+   "release_precision": "day",
+   "total_params_b": 750.0,
+   "active_params_b": null,
+   "arch": "Loop Transformer（28 层共享权重循环两轮 → 106 层等效）+ 24 层视觉编码器",
+   "context_in": 1048576,
+   "context_out": 131072,
+   "multimodal_in": 1,
+   "open_weights": 0,
+   "license": "未开源（官方称将开源，无时间表）",
+   "is_latest": 1,
+   "notes": "🆕 **11/23 发布、11/25 入列**：智谱首个 **Loop Transformer** 旗舰，750B 基座 / 1M 上下文 / 首个带视觉的 GLM。做法是不新增参数量，而是把 GLM-5 基座中间 28 层改为**共享权重循环执行两轮**，物理 78 层撑出 106 层等效深度，基座约 **750B**；官方称智能水平达到 2T–3T 参数区间（厂商自报，无独立验证）。**Hy 系之外首个原生带视觉的 GLM 旗舰**（+24 层视觉编码器），1M 上下文 / 128K 最大输出，输入支持文/图/视频/文件。定位「**泛 Coding**」——用代码驱动 3D 建模、视频动效、机械设计（官方案例含 FreeCAD / Blender 机械臂、Three.js 可漫游场景）。🔴 **定价：官方 Model API 尚未开放**（口径为「完成安全评估后开放」，无时间表），因此**没有官方 per-token 牌价**；当前唯一官方付费通道是 GLM Coding Plan（$18 / $80 / $168 每月，额度制：4.6 信用/万输入、1.1 缓存、16 输出，约为 GLM-5.3 的 2/3，同等额度可覆盖约 1.5 倍 token）。库内价格行取**第三方渠道牌价**：火山引擎 Trae 计费页（2026-11-24 更新）列 GLM-5.4 为 **¥8 入 / ¥2 缓存命中 / ¥28 出**，与 GLM-5.3 同档 → 记为 `estimated`，**不是官方 API 价**，官方开放后须复核替换。⚠️ 权重「计划负责任地开源」，截至 11/25 无时间表 → `open_weights=0`。🔴 **无第三方榜分**：llm-stats 456 条目中无 GLM-5.4，AA 模型索引、vals.ai、tbench.ai 亦均无条目 → 按本库纪律**入「待评级」、不参与综合分**（缺纵轴就不画点）。可查的对比只有厂商/私测：官方称编程能力较 GLM-5.3 +55.8%（未公布完整跑分）；海外评测者 AICodeKing 私测 33.2，与 GPT-6.2 Astra（33.6）基本持平、落后 Opus 5.5（34.7）约 5%；KingBench 4 开源模型第一（工具调用失败率 1.56%、重试恢复率 66%）。速度：非高峰 ≈200 tok/s、高峰 70–80 tok/s。已知局限由官方主动说明（长程任务偶发过度思考）。"
   }
  ],
  "prices": [
@@ -2220,6 +2239,16 @@
    "cached_per_m": 0.045,
    "output_per_m": 4.473,
    "source_url": "https://wokey.ai/codex-usage-limits"
+  },
+  {
+   "model_id": "glm-5.4",
+   "region": "CN",
+   "currency": "CNY",
+   "scenario": "estimated",
+   "input_per_m": 8.0,
+   "cached_per_m": 2.0,
+   "output_per_m": 28.0,
+   "source_url": "https://docs.volcengine.com/docs/trae-cn/billing-items"
   }
  ],
  "plans": [
@@ -8992,6 +9021,48 @@
    "title": "火山方舟模型上线公告（更新至 2026-11-20）",
    "excerpt": "11/18 上线 doubao-seedream-5.5（图像，最多 99 图层）与 doubao-seedance-2.5-flash（视频）；10/20 上线 deepseek-v4.1-flash-economy（同权重、更低价、生成略慢）。三者均为视觉/经济档，不入通用榜。",
    "tags": "bytedance,release,vision,economy"
+  },
+  {
+   "platform": "official_media",
+   "url": "https://news.qq.com/rain/a/20261124A0BON700",
+   "title": "智谱 GLM-5.4 发布：首个 Loop Transformer 旗舰，主打「泛 Coding」（智东西 11/24）",
+   "excerpt": "11/23 晚发布。把 GLM-5 基座中间 28 层改为共享权重循环两轮（物理 78 层 → 106 层等效深度），基座约 750B；新增视觉能力；1M 上下文 / 128K 输出；200 个真实场景编程评测称优于 GLM-5.3、Kimi K3.1 Pro、DeepSeek-V4.1-Flash-1017；官方定位「当前基座收官之作 + GLM-5.5 的技术前哨」。API 待安全评估，权重计划开源无时间表。",
+   "tags": "zhipu,release,glm,loop-transformer"
+  },
+  {
+   "platform": "pricing_tracker",
+   "url": "https://tenbrief.com/en/2026/11/25/glm-5-4-pricing-how-to-use",
+   "title": "GLM-5.4 无 per-token 牌价，唯一付费通道是 Coding Plan（11/25 核）",
+   "excerpt": "Z.ai 价目表无 GLM-5.4 行；Model API「安全评估完成后开放」且无日期。Coding Plan $18/$80/$168 每月，信用倍率 4.6/1.1/16（GLM-5.3 为 6.9/1.7/24）。GLM-5.3 API 仍为 $1.40/$0.26/$4.40。AA 模型索引、vals.ai、tbench.ai 均无 GLM-5.4 条目。",
+   "tags": "zhipu,glm,pricing,coding-plan"
+  },
+  {
+   "platform": "official_doc",
+   "url": "https://docs.volcengine.com/docs/trae-cn/billing-items",
+   "title": "火山引擎 Trae 计费项（2026-11-24 更新，含 GLM-5.4 牌价）",
+   "excerpt": "Trae 内置模型 token 单价表：GLM-5.4 ¥8 输入 / ¥28 输出 / ¥2 缓存命中（与 GLM-5.3 同档）；Doubao-Seed-2.1-Pro ¥6/¥30、Qwen4-Max ¥10/¥30、Kimi-K3.1-Pro-Highspeed ¥26/¥136。GLM-5.4 官方 API 未开，此为第三方渠道牌价，库内按 estimated 记。",
+   "tags": "zhipu,glm,pricing,reseller,volcengine"
+  },
+  {
+   "platform": "official_media",
+   "url": "https://www.qbitai.com/2026/11/512354.html",
+   "title": "文心 5.5 Flash Preview 正式开源（Apache-2.0，11/24）",
+   "excerpt": "11/24 百度开放权重：280B 总参 / 14B 激活、1M 上下文、Apache-2.0，HF + ModelScope 可下；CodeArena WebDev 1668 分开源第 2；官方同批给出 AutomationBench 61.9 与 Terminal-Bench 4.0 46.5。",
+   "tags": "baidu,ernie,open-weights,apache"
+  },
+  {
+   "platform": "news_digest",
+   "url": "https://xiuxiu.huxiu.com/hxgpt_agent/morning_daily/2026-11-25.html",
+   "title": "虎嗅早报 11/25：腾讯混元开源 Hy MT3 翻译模型；豆包「小豆」邀请制公测",
+   "excerpt": "11/24 腾讯混元发布并开源第三代翻译模型 Hy MT3（1.8B / 7B / 30B-A3B 三个尺寸，已在 Hy 翻译 App 与小程序上线）。翻译垂类，不入通用榜；豆包个人助理「小豆」开启邀请制公测（产品层，非模型）。",
+   "tags": "tencent,hunyuan,translation,release"
+  },
+  {
+   "platform": "changelog",
+   "url": "https://console.volcengine.com/ark/region:cn-beijing/docs/model-release-announcement",
+   "title": "火山方舟模型发布公告（更新至 2026-11-24）",
+   "excerpt": "202611 批：doubao-seed-evolving 滚动升级（多步任务规划 / 工具调用 / 事实一致性改善，统一 Model ID 自动生效）；新发 doubao-seedance-2-5-flash-261115（视频生成，480p/720p）。前者属同 ID 换权重、后者属视频支线 → 均不建行。",
+   "tags": "bytedance,release,video,rolling-alias"
   }
  ],
  "community_signals": [
@@ -14082,6 +14153,96 @@
    "sentiment": "positive",
    "engagement": 20249,
    "quote": "发布期实测（3D 建模/创意写作/广告短片/积木搭建/Unity 游戏六项，多任务对比 Opus 5.5）：价格亲民、细节略逊 Opus——补录该模型时一并归档的社区基线",
+   "platform": "bilibili"
+  },
+  {
+   "model_id": "glm-5.4",
+   "ref_id": "BV1s6yZzTEfr",
+   "author": "潦草学者",
+   "engagement": 1108,
+   "sentiment": "mixed",
+   "quote": "【实测】800B 碰瓷 3T？7 道题跑了 9 小时，智谱 GLM-5.4 还是等 GLM-6 吧（7 道网页/3D 题 + 5 道修 Bug 全流程实测）",
+   "url": "https://www.bilibili.com/video/BV1s6yZzTEfr",
+   "platform": "bilibili"
+  },
+  {
+   "model_id": "glm-5.4",
+   "ref_id": "BV19g1AzwECo",
+   "author": "译外之见ViewTrans",
+   "engagement": 164,
+   "sentiment": "mixed",
+   "quote": "GLM-5.4 喜欢「雷霆大思考」？实测等了 28 分钟才写第一行代码：ZCode Max 档记录思考 1680 秒，随后一次写出 575 行、通过 8 项检查",
+   "url": "https://www.bilibili.com/video/BV19g1AzwECo",
+   "platform": "bilibili"
+  },
+  {
+   "model_id": "glm-5.4",
+   "ref_id": "BV1xc1FzrEDn",
+   "author": "每日英语学习看世界",
+   "engagement": 999,
+   "sentiment": "mixed",
+   "quote": "（Bijan Bowen 中译）GLM-5.4 强到离谱却不敢推荐？实测 C++ 游戏、3D 建模、Rust、CAD 与浏览器工作流",
+   "url": "https://www.bilibili.com/video/BV1xc1FzrEDn",
+   "platform": "bilibili"
+  },
+  {
+   "model_id": "glm-5.4",
+   "ref_id": "BV1ghyqzXERM",
+   "author": "黑粉科技HyphenTech",
+   "engagement": 162,
+   "sentiment": "mixed",
+   "quote": "真实优缺点全拆解：KingBench 4 拿 33.2/60 冲上开放模型第一、超 Kimi K3.1，但高档位慢 4 倍易超时——值不值得订阅",
+   "url": "https://www.bilibili.com/video/BV1ghyqzXERM",
+   "platform": "bilibili"
+  },
+  {
+   "model_id": "glm-5.4",
+   "ref_id": "BV1i21czfEPC",
+   "author": "碳基生物退役指南",
+   "engagement": 2836,
+   "sentiment": "positive",
+   "quote": "智谱 GLM-5.4 实测：跟 Qwen4-Max 过过招",
+   "url": "https://www.bilibili.com/video/BV1i21czfEPC",
+   "platform": "bilibili"
+  },
+  {
+   "model_id": "glm-5.4",
+   "ref_id": "BV1TeyHzvEV6",
+   "author": "丷王子",
+   "engagement": 5697,
+   "sentiment": "positive",
+   "quote": "GLM5.4 全量发布：订阅用户全部可用、额度 +50%，称超越 Kimi 成为开源第一，但与顶尖闭源仍有代差",
+   "url": "https://www.bilibili.com/video/BV1TeyHzvEV6",
+   "platform": "bilibili"
+  },
+  {
+   "model_id": "glm-5.4",
+   "ref_id": "BV1zJyDzqEm1",
+   "author": "羊毛团Dibo",
+   "engagement": 376,
+   "sentiment": "mixed",
+   "quote": "智谱更新 GLM5.4，多家订阅价黑五活动堪称腰斩（订阅层促销，非 API 牌价）",
+   "url": "https://www.bilibili.com/video/BV1zJyDzqEm1",
+   "platform": "bilibili"
+  },
+  {
+   "model_id": "ernie-5.5-flash",
+   "ref_id": "BV1VX1czdENn",
+   "author": "鲲鹏Talk",
+   "engagement": 1378,
+   "sentiment": "positive",
+   "quote": "百度终于开源了！ERNIE 5.5 Flash 实测：280B 参数仅激活 14B、1M 上下文、287 token/s，OpenRouter 免费可调",
+   "url": "https://www.bilibili.com/video/BV1VX1czdENn",
+   "platform": "bilibili"
+  },
+  {
+   "model_id": "glm-5.3",
+   "ref_id": "BV1BHyDzKEJX",
+   "author": "黑鸦Heya",
+   "engagement": 68928,
+   "sentiment": "positive",
+   "quote": "AI 圈沸腾：Gemini 代码被曝藏 Helium 订阅档，智谱突袭祭出 GLM-5.4，Loop Transformer 登场（本轮最高播放）",
+   "url": "https://www.bilibili.com/video/BV1BHyDzKEJX",
    "platform": "bilibili"
   }
  ]

@@ -1,0 +1,11 @@
+integrity audit  |  db=D:\workbuddy工作区\电脑调试与tailnet\model_intel\llm_intel.db
+                 |  baseline=D:\workbuddy工作区\电脑调试与tailnet\model_intel\baseline.json
+
+  WARN   22  untraceable_benchmarks
+  WARN    4  undated_benchmarks
+  WARN   19  ignored_single_observation_boards
+
+
+(WARN categories are known/expected conditions; run with --verbose to list them)
+
+no ERROR findings; 45 WARN finding(s) are informational.
